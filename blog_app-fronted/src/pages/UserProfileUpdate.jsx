@@ -1,16 +1,85 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import {BiSolidEdit, BiUpload} from 'react-icons/bi'
 import {FiTrash2} from 'react-icons/fi'
-import { Link } from 'react-router-dom'
+import { Link,useNavigate } from 'react-router-dom'
 import DeleteModal from '../components/deleteModal'
-
+import axios from 'axios'
 
 const UserProfileUpdate = () => {
-  const handleOnChange = async()=>{}
-  const handleOnSubmit = async()=>{}
+  
+  const navigate = useNavigate();
+  const initialValue = {
+    fname:"",
+    lname:"",
+    email:"",
+    password:"",
+    Cpassword:"",
+    mob:"",
+    bio:""
+  }
+  const [formData, setFormData] = useState(initialValue);
+
+  const baseURL = 'http://localhost:3001'
+  const userId =  JSON.parse(localStorage.getItem('blogUser')).user._id ;
+  const token = JSON.parse(localStorage.getItem('blogAuth')).token;
   const [deleteModalShow,setDeleteModalShow] = useState(false);
 
 
+  useEffect(()=>{
+    const UpdateUserData = async () => {
+      console.log(userId)
+      try {
+        const response = await axios.get(`${baseURL}/user/getSingleUser/${userId}`,
+         {headers: {
+          Authorization: `Bearer ${token}`
+         },});
+
+        if (response.status===200) {
+           console.log("before updating user data=> ",response.data);
+           let userData = response.data.data;
+           setFormData({
+            fname: userData.fname,
+            lname: userData.lname,
+            email: userData.email,
+            mob: userData.mob,
+            bio: userData.bio,
+          });
+        
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    UpdateUserData();
+
+  },[])
+
+  const handleOnSubmit = async(e)=>{
+
+    e.preventDefault();
+  console.log('changes data',formData)
+    try {
+      
+      const response = await axios.post(`${baseURL}/user/updateUser/${userId}`, formData,{
+        headers:{
+          'ContentType':'application/json',
+          Authorization:`Bearer ${token}`
+        }
+      });
+      
+      if (response.status === 200) {
+        console.log('User updated successfully');
+        localStorage.setItem('blogUser',JSON.stringify({user:response.data.data}))
+        navigate('/')
+      } else {
+        console.error('Failed to update user');
+      }
+    } catch (error) {
+      console.error('Error updating user:', error);
+    }
+
+  }
 
   return (
     <div className='bg-[#F5F5F5] pt-2'>
@@ -39,13 +108,13 @@ const UserProfileUpdate = () => {
    
    </div>
 {/* //-------------------------- personal information start  */}
-  <form>
+  <form onSubmit={handleOnSubmit}>
      <div className='w-full m-auto border-2 rounded  bg-gray-200 p-4'>
       <div className='flex flex-row justify-between items-center '>
         <h2 className='font-medium text-xl mb-4'>Personal Information</h2>
         <div className='flex flex-row gap-x-6'>
           <button className='px-3 py-2 bg-[#161D29] rounded text-white font-medium taxt-medium'>Cancel</button>
-          <button className='px-4 py-2 bg-primary rounded text-white font-medium taxt-medium'>Save</button>
+          <button type='submit' className='px-4 py-2 bg-primary rounded text-white font-medium taxt-medium'>Save</button>
         </div>
       </div>
          <div className='Inputs-container flex flex-col sm:justify-between sm:items-center justify-center rounded items-start sm:flex-row'>
@@ -57,7 +126,10 @@ const UserProfileUpdate = () => {
                             <input
                               required
                               type="text"
+                              
                               name="fname"
+                              value={formData.fname}
+                              onChange={(e) => setFormData({ ...formData, fname: e.target.value })}
                               autoComplete="off"
                               placeholder="Enter full name"
                               className="w-full px-3 py-2 border-[1px]  rounded-md text-gray-700 outline-none  focus:border-[#59e372] "
@@ -71,9 +143,13 @@ const UserProfileUpdate = () => {
                               required
                               type="email"
                               name="email"
+                              disabled
+                              
+                              value={formData.email}
+                              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                               autoComplete="off"
                               placeholder="Enter email"
-                              className="w-full px-3 py-2 border-[1px]  rounded-md text-gray-700 outline-none  focus:border-[#59e372] "
+                              className="w-full px-3 py-2 border-[1px]  rounded-md text-gray-700 outline-none  focus:border-[#59e372] cursor-not-allowed"
                             />
                           </label>
               </div>
@@ -86,6 +162,8 @@ const UserProfileUpdate = () => {
                               required
                               type="text"
                               name="lname"
+                              value={formData.lname}
+                              onChange={(e) => setFormData({ ...formData, lname: e.target.value })}
                               autoComplete="off"
                               placeholder="Enter Last Name"
                               className="w-full px-3 py-2 border-[1px]  rounded-md text-gray-700 outline-none  focus:border-[#59e372] "
@@ -99,6 +177,8 @@ const UserProfileUpdate = () => {
                               required
                               type="tel"
                               name="mob"
+                              value={formData.mob}
+                              onChange={(e) => setFormData({ ...formData, mob: e.target.value })}
                               autoComplete="off"
                               placeholder="Enter mobile number"
                               className="w-full px-3 py-2 border-[1px]  rounded-md text-gray-700 outline-none  focus:border-[#59e372] "
@@ -110,7 +190,14 @@ const UserProfileUpdate = () => {
                            <div className='my-4 w-[90%] sm:w-full'>
                          <label htmlFor="bio" className='py-5'>
                            Your Bio </label>
-                            <textarea name="bio" placeholder='Tell you something about you' id="bio" cols="30" rows="10" className='w-full resize-none rounded h-[150px] sm:h-[130px] md:h-[100px] focus:outline-none mt-2 focus:border-[#59e372] ' maxLength={'250'} minLength={'0'} ></textarea>
+                            <textarea name="bio" placeholder='Tell you something about you'
+                             id="bio" cols="30" rows="10" 
+                             className='w-full resize-none rounded h-[150px] sm:h-[130px] md:h-[100px] focus:outline-none mt-2 focus:border-[#59e372] ' 
+                             value={formData.bio}
+                             onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                             maxLength={'250'} 
+                             minLength={'0'} >
+                             </textarea>
                           
                           </div>
   
@@ -118,7 +205,9 @@ const UserProfileUpdate = () => {
      </div>
 
   </form>
-  <div className="deleteUserBox w-full p-4 bg-[#9e004cde] border-[1px] border-[#451414] rounded mt-6" >
+
+         <div className='text-[#AB2163] mt-6'>If you wants to delete your account?</div>
+  <div className="deleteUserBox w-full font-sm p-4 bg-[#9e004cde] border-[1px] border-[#451414] rounded mt-2" >
   <div className="flex items-center">
     <div className="bg-red-600 text-white rounded-full p-2">
       <FiTrash2 size={20} />
@@ -142,6 +231,7 @@ const UserProfileUpdate = () => {
       {deleteModalShow?<DeleteModal setDeleteModalShow={setDeleteModalShow}/>:""}
     </div>
   )
-}
+
+  }
 
 export default UserProfileUpdate

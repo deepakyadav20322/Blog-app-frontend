@@ -3,10 +3,14 @@ import {PiHeart} from 'react-icons/pi'
 import {FaRegComment} from 'react-icons/fa'
 import {BsEye} from 'react-icons/bs'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 
-const UdashboardPostShow = () => {
+
+const UdashboardPostShow = ({userSpecificPosts}) => {
+
   return (
     <div>
+   
          <div className='border-2'>
                 <div className='flex flex-row justify-between mx-3'>
                   <h2 className='font-bold text-xl'>Posts</h2>
@@ -19,21 +23,24 @@ const UdashboardPostShow = () => {
                     </select>
                   </div>
                 </div>
-                <div className='posts-container flex-col md:flex-row flex justify-between items-center border-2 p-4 rounded bg-white m-2'>
-                  <div><Link className='text-[#3B49DF] font-bold'> Test Post</Link>
+
+                { userSpecificPosts.map((post)=>(
+                <div key={post._id} className='posts-container flex-col md:flex-row flex justify-between items-start border-2 p-4 rounded bg-white m-2'>
+                  <div><Link to={`/singleBlog/${post._id}`} className='text-[#3B49DF] font-bold'>{post.title}</Link>
                   <p className='text-[12px]'>Published: 19 sep</p>
                   </div>
-                  <div className='flex flex-row '>
-                  <div className='flex flex-row justify-between items-center'> <PiHeart size={21} className='mx-[6px]' /><FaRegComment className='mx-[6px]' size={21}/> <BsEye size={21} className='mx-[6px]' /> 
+                  <div className='flex flex-row justify-between sm:justify-center mt-2 sm:mt-1 md:mt-0'>
+                  <div className='flex flex-row justify-between items-center'> <PiHeart size={21} className='mx-[6px]' /><FaRegComment className='mx-[6px]' size={21}/> <div className='flex gap-[2px] mr-1'> <BsEye size={21} className='mx-[6px]' />{post.viewCount} </div>
                   </div>
-                  <div className='flex flex-row justify-between items-center'><Link className='ml-2'>Manage</Link>
-                  <Link className='mx-2'>Edit</Link>
+                  <div className='flex flex-row justify-between items-center'><Link className='ml-2 text-red-600'>Delete</Link>
+                  <Link to={`/updatePost/${post._id}`} className='mx-[0.8rem] text-green-600'>Edit</Link>
                   </div>
                   </div>
                   </div>
+                ))}
             </div>
-    </div>
-  )
-}
+            </div>
+  
+)}
 
 export default UdashboardPostShow

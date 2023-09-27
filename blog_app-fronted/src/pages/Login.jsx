@@ -10,6 +10,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 
 
 const Login = () => {
+
 console.log("deep22222")
   const [isOpenForget, setIsOpenForget] = useState(false);
   const [isOpenVerify, setIsOpenVerify] = useState(false);
@@ -48,6 +49,8 @@ const handleOnChange = (event) => {
         localStorage.setItem('blogUser',JSON.stringify(res.data.data));
        setIsAuthenticated(true);
        setLoginUser(res.data.data);
+       localStorage.setItem('loginMessage',"Login successfully");
+      
        navigate('/dashboard');
       }
       setLoginData({ email:"",password:"",})
@@ -64,6 +67,7 @@ const handleOnChange = (event) => {
     }
   }
 
+ 
  
 
 useEffect(()=>{

@@ -23,7 +23,7 @@ const Navbar = () => {
     })
    
   return (
-    <nav className="flex item-center justify-between pt-4 pb-2 ">
+    <nav className="flex item-center justify-between pt-3 pb-1 border-b-[1px] ">
         <Link to={"/"}>
             <div className="flex items-center cursor-pointer">
                 <img src={logo} height={35} width={40} />

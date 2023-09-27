@@ -6,8 +6,8 @@ import userLogo from '../assets/userLogo.jpg';
 
     const profileLinks = [
         {
-          linkText: "Google",
-          link: "https://www.google.com"
+          linkText: "Dashboard",
+          link: "/dashboard"
         },
         {
           linkText: "Facebook",
@@ -36,7 +36,7 @@ function classNames(...classes) {
 export default function DropDownAllLinks() {
 
   return (
-    <Menu as="div" className="relative inline-block text-left">
+    <Menu as="div" className="relative inline-block text-left ">
       <div>
         <Menu.Button className="inline-flex w-full justify-center  rounded-md bg-white hover:bg-gray-50">
         <img src={userLogo} className='w-[50px] h-[50px] rounded-full border-2'/>
@@ -54,20 +54,20 @@ export default function DropDownAllLinks() {
         leaveTo="transform opacity-0 scale-95"
       >
         
-        <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none userProf ">
           <div className="py-1">
           {profileLinks.map((data,idx)=>(
             <Menu.Item key={idx}>
               {({ active }) => (
-                <a
-                  href={data.link}
+                <Link
+                  to={data.link}
                   className={classNames(
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                     'block px-4 py-2 text-sm'
                   )}
                 >
                  {data.linkText}
-                </a>
+                </Link>
               )}
             </Menu.Item>
             ))}

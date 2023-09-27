@@ -1,5 +1,5 @@
-import React,{useContext, useEffect, useState} from 'react'
-import { Link, json, useNavigate } from 'react-router-dom'
+import React,{useContext,useEffect, useState} from 'react'
+import { Link, json, useLocation, useNavigate } from 'react-router-dom'
 import UdashboardPostShow from '../components/UdashboardPostShow'
 import { Authcontext } from '../context/UserContext'
 import UserProfile from '../components/UesrProfile'
@@ -7,6 +7,11 @@ import UserProfileUpdate from './UserProfileUpdate'
 import UdashboardPostStats from '../components/UdashboardPostStats'
 import {VscThreeBars} from 'react-icons/vsc'
 import {CgClose} from 'react-icons/cg'
+import axios from 'axios'
+import toast,{Toaster} from 'react-hot-toast'
+import CommentPopUp from '../components/FirstDoLoginPopUp'
+
+
 
 const DashboardLinks =[
   { text: 'Post', componentRener: '#' },
@@ -16,6 +21,41 @@ const DashboardLinks =[
 
 
 const UserDashboard = () => {
+  useEffect(() => {
+    const loginMessage = localStorage.getItem('loginMessage');
+    
+    if (loginMessage !== null) {
+      toast.success(loginMessage,{duration:3000});
+      localStorage.removeItem('loginMessage');
+    }
+  }, []);
+   
+  const [userSpecificPosts,setUserSpecificPosts] = useState([]);
+
+      const baseURL = 'http://localhost:3001'
+  const userId = JSON.parse(localStorage.getItem('blogUser')).user._id;
+
+  useEffect(()=>{
+   
+    console.log(userId)
+   const getAllPostsUser = async()=>{
+    try {
+      const res = await axios.get(`${baseURL}/post/getAllPostsOfUser/${userId}`)
+      if(res.status===200){
+        console.log('user spaecific data success')
+        console.log(res.data.data);
+        setUserSpecificPosts(res.data.data);
+      }
+      
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+  getAllPostsUser()
+
+  },[]);
+ 
 
   const [dashSmallNavOpen,setDashSmallNavOpen] = useState(false);
   const{loginUser,setLoginUser}  = useContext(Authcontext);
@@ -26,13 +66,15 @@ const UserDashboard = () => {
   const handleClickRender = (event, linkText) => {
     event.preventDefault();
     setRenderValue(linkText);
-  }
 
+   
+  }
 
   return (
     
-    // <div className='text-center text-4xl font-bold'> <div>UserDashboard</div></div>
+    
     <>
+    
       <div className='bg-[#F5F5F5] min-h-screen relative'>
                  
         {/* ======================= (stsrt)   Dashboard navigation bar for small screes========================= */}
@@ -54,7 +96,7 @@ const UserDashboard = () => {
         {/* ======================= (END)   Dashboard navigation bar for small screes========================= */}
 
         <div className=' max-w-[1280px] m-auto border-2 mt-2 '>
-            <h1 className='my-2 text-2xl md:text-3xl font-bold md:ml-6'> <span onClick={()=>setDashSmallNavOpen(true)}><VscThreeBars className="inline ml-2 mr-5 cursor-pointer" /></span>User Dashboard</h1>
+            <h1 className='my-2 text-2xl md:text-3xl font-bold md:ml-6 block md:hidden'> <span onClick={()=>setDashSmallNavOpen(true)}><VscThreeBars className="inline ml-2 mr-5 cursor-pointer" /></span>User Dashboard</h1>
             <div className='flex flex-row justify-start items-start w-full'>
             <div className='left-side hidden md:block '>
               <div className='left-navigation min-h-[90vh] rounded bg-white border-2 border-gray-400 w-[300px] mt-2'>
@@ -73,7 +115,7 @@ const UserDashboard = () => {
               {/* <UdashboardPostShow/> */}
               {/* <UesrProfile/> */}
               {/* <UserProfileUpdate/> */}
-              {renderValue==='Post'?<UdashboardPostShow/>:""}
+              {renderValue==='Post'?<UdashboardPostShow userSpecificPosts={userSpecificPosts} />:""}
               {renderValue==='Profile'?<UserProfile/>:""}
               {renderValue==='Analytics'?<UdashboardPostStats/>:""}
               {/* {renderValue==='Post'?<UdashboardPostShow/>:""} */}
@@ -82,6 +124,7 @@ const UserDashboard = () => {
 
         </div>
       </div>
+      <Toaster/>
     </>
   )
 }

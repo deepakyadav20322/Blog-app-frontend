@@ -1,50 +1,90 @@
-import React, { useState, useContext } from "react";
+import React, { useState ,useEffect,useContext } from "react";
 import { Authcontext } from "../context/UserContext";
 import axios from "axios";
+import { useParams ,useNavigate} from "react-router-dom";
 
 
-const CreatePost = () => {
+const UpdatePost = () => {
+
+  const baseURL = 'http://localhost:3001'  
   const { setLoginUser } = useContext(Authcontext);
   const initialValue = { title: "", content: "", description: "", tags:[],author:"" };
   const [formData, setFormData] = useState(initialValue);
   const [selectedTags, setSelectedTags] = useState([]);
+  const  {postId} = useParams();
   const token = JSON.parse(localStorage.getItem('blogAuth')).token
-  const baseURL = 'http://localhost:3001'
+  const userId =  JSON.parse(localStorage.getItem('blogUser')).user._id ;
+  const naviagte = useNavigate()
 
+// ------------------------------------------------------------------------------------------------
+ 
+  // Fetch the post data based on the postId and populate the form fields
+  useEffect(() => {
+    const UpdatePostData = async () => {
+      // Make an API call to fetch the post data for the given postId
+      console.log(postId)
+      try {
+        const response = await axios.get(`${baseURL}/post/getPostByIdForUpdate/${postId}`);
+        if (response.status===200) {
+           console.log("before updating blog data=> ",response.data);
+           let postData = response.data;
+          setFormData({
+            title: postData.title,
+            content: postData.content,
+            description: postData.description,
+            tags: postData.tags,
+            author: postData.author,
+          });
+          // Set selectedTags based on the tags from the response
+          setSelectedTags(postData.tags);
+        } else {
+          // Handle error when post data cannot be fetched
+          console.error("Error fetching post data1");
+        }
+      } catch (error) {
+        console.error("Error fetching post data:", error);
+      }
+    };
 
-  const handleSubmit = async (e) => {
+    UpdatePostData();
+  }, [postId]);
+
+// ------------------------------------------------------------------------------------------------
+     
+const handleSubmit = async (e) => {
+    try {
+        
     e.preventDefault();
-         if(selectedTags.length!==4){
+         if(selectedTags.length<4){
           alert("Must add four tags...");
           return;
          }
         formData.tags = selectedTags
         formData.author = JSON.parse(localStorage.getItem('blogUser')).user._id ;
-    // Dispatch the createPostAsync action with the form data
+    
     console.log(formData)
     console.log("write api call?")
-    
-    try {
-
-      const response = await axios.post(`${baseURL}/post/createPost`, formData, {
-        headers: {
-          'Authorization': `Bearer ${token}` ,
-          'Content-Type': 'application/json',
+    const response = await axios.post(`${baseURL}/post/updatePost/${postId}`,formData,{
+        headers:{
+            'Content-Type':'application/json',
+            Authorization:`Bearer ${token}`
         }
-      });
-      if(response.status===200){
-        const data = response.data;
-        console.log('save posts=>',data);
-      }
-      setFormData(initialValue);
-      setSelectedTags([]);
-    } catch (error) {
-      console.log("Error to create the new posts",error)
+    });
+    if(response.status==200){
+        console.log("post successfully updated...");
+        console.log(response.data.data)
+           naviagte(`/dashboard`)
     }
-
+    setSelectedTags([]);
+}
+    catch (error) {
+        console.log("Error during post update",error);
+    }
   };
 
-  
+
+
+
   const availableTags = [
     "React",
     "NodeJs",
@@ -86,7 +126,7 @@ const CreatePost = () => {
       <div className="text-center text-primary mb-2 ">
         {" "}
         <span className="border-b-2 border-black px-4 pb-2">
-          Create Your New Post{" "}
+          Update Your Post{" "}
           
         </span>
       </div>
@@ -194,4 +234,4 @@ const CreatePost = () => {
   );
 };
 
-export default CreatePost;
+export default UpdatePost;
