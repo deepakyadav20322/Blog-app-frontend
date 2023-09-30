@@ -137,9 +137,15 @@ const handleSaveClick = async () => {
         if(response.status===200){
         console.log( response.data); 
         console.log("post unSaved successfully"); 
+        toast.success('Post remove into reading List',{
+          duration:3000,
+          className:'toasti',
+          position:'bottom-right',
+          
+        })
         // Remove the post ID from savedPosts in localStorage
         const blogUser = JSON.parse(localStorage.getItem('blogUser'));
-      const updatedSavedPosts = blogUser.user.savedPost.filter(savedPost => savedPost.post !== blogId);
+      const updatedSavedPosts = blogUser?.user.savedPost.filter(savedPost => savedPost.post !== blogId);
       blogUser.user.savedPost = updatedSavedPosts;
       localStorage.setItem('blogUser', JSON.stringify(blogUser));
         }
@@ -165,9 +171,14 @@ const handleSaveClick = async () => {
          if(response.status===200){
          console.log( response.data); 
          console.log("post saved successfully"); 
+         toast.success('Post add into reading List',{
+          duration:3000,
+          className:'toasti',
+          position:'bottom-right',
+        })
          // Add the post ID to savedPosts in localStorage
          const blogUser = JSON.parse(localStorage.getItem('blogUser'));
-         blogUser.user.savedPost.push({ post: blogId, createdAt: new Date() });
+         blogUser?.user.savedPost.push({ post: blogId, createdAt: new Date() });
          localStorage.setItem('blogUser', JSON.stringify(blogUser));
          }
        } catch (error) {
@@ -185,15 +196,15 @@ const handleSaveClick = async () => {
 // ----------------------------------------------------------------------
 
 useEffect(() => {
-  const savedPosts = JSON.parse(localStorage.getItem('blogUser')).user?.savedPost;
+  const savedPosts = JSON.parse(localStorage.getItem('blogUser'))?.user?.savedPost;
   console.log('array check',savedPosts)
-  const exists = savedPosts.some(savedPost => savedPost.post === blogId);
+  const exists = savedPosts?.some(savedPost => savedPost.post === blogId);
   console.log('exist',exists)
   setIsPostSaved(exists);
 }, [blogId]);
 
 // ----------------------------------------------------------------------
-
+//-----------------------------------------------------------------------
   
     if (loading) {
     return(  <div className='border border-blue-300 shadow rounded-md p-4 max-w-[700px] w-full mx-auto'>
@@ -236,7 +247,7 @@ useEffect(() => {
                     </div>
                     <div className='ml-3 w-full flex flex-col'>
                         <div>{(blog.author).fname} {" "}{(blog.author).lname}</div>
-                        <div><span>15 min read , </span><span>{new Date(blog.createdAt).toLocaleString("en-US", options)}</span></div>
+                        <div><span className='mx-1'>Follow</span><span>{new Date(blog.createdAt).toLocaleString("en-US", options)}</span></div>
 
                     </div>
               <div className={`${userId===blog.author._id?'flex':"hidden"} rounded  py-2 sm:py-0 sm:flex-row sm:justify-center flex-col items-center justify-center sm:items-center bg-[#FEF5E6] h-12 sm:h-9 text-sm mr-2`}><div className=''> 
@@ -294,7 +305,7 @@ useEffect(() => {
                   <form onSubmit={handleCommentOnSubmit}>
               
               
-                      <textarea className={`border-2 p-3 text-[18px] border-black min-w-[350px] w-full min-h-[100px] ${token?'focus:min-h-[200px]':""} transition-all duration-150 rounded resize-none }`} onClick={handleTextAreaClick}  name="commentText" id="" placeholder='Add to discussion' value={commentData.commentText} onChange={(e)=>setCommentData({...commentData,commentText:e.target.value})}>
+                      <textarea className={`border-2 p-3 text-[18px] border-black min-w-[350px] w-full min-h-[100px] transition-all duration-150 rounded resize-none }`} onClick={handleTextAreaClick} name="commentText" id="" placeholder='Add to discussion' value={commentData.commentText} onChange={(e)=>setCommentData({...commentData,commentText:e.target.value})}>
                   </textarea>
                   <div className={`${(btnShow && token )?'flex':'hidden'} flex-row justify-end items-cenetr py-2 px-2`}>
                   <button  disabled={commentData?.commentText?.length === 0} type='submit' className={`px-3 py-2 rounded  mx-2 ${(commentData?.commentText?.length==0) ?'bg-[#8992EC] text-[white] cursor-not-allowed':"bg-green-600 text-white"}`}>Save</button>

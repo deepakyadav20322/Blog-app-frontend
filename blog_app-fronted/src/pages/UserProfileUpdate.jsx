@@ -15,7 +15,15 @@ const UserProfileUpdate = () => {
     password:"",
     Cpassword:"",
     mob:"",
-    bio:""
+    bio:"",
+    websiteURL:"",
+    location:"",
+    available:"",
+    currentLearning:"",
+    skillLanguage:"",
+    work:"",
+    education:"",
+    brandColor:"#000",
   }
   const [formData, setFormData] = useState(initialValue);
 
@@ -43,6 +51,14 @@ const UserProfileUpdate = () => {
             email: userData.email,
             mob: userData.mob,
             bio: userData.bio,
+            websiteURL:userData.websiteURL,
+            location:userData.location,
+            available:userData.available,
+            currentLearning:userData.currentLearning,
+            skillLanguage:userData.skillLanguage,
+            work:userData.work,
+            education:userData.education,
+            brandColor:userData.brandColor,
           });
         
         }
@@ -203,7 +219,153 @@ const UserProfileUpdate = () => {
   
 
      </div>
+{/* --------------------------------- Basic Information Box -------------------------- */}
 
+          <div className='flex flex-col justify-center items-start'>
+          <div className='my-4 w-[90%]  sm:w-full border-2 px-4 pb-2 bg-gray-200 rounded'>
+          <h1 className=' text-2xl font-bold flex my-2 '>Basic</h1>
+              <label className="py-5">
+                            <p className="mb-1 mt-3 text-[rgb(23,23,23)] font-medium">
+                            Website URL
+                            </p>
+                            <input
+                              type="text"
+                              name="websiteURL"
+                              value={formData.websiteURL}
+                              onChange={(e) => setFormData({ ...formData, websiteURL: e.target.value })}
+                              autoComplete="off"
+                              placeholder="http://yoursite.com"
+                              className="w-full px-3 py-2 border-[1px]  rounded-md text-gray-700 outline-none  focus:border-[#59e372] "
+                            />
+                          </label>
+          
+          
+              <label className="py-5">
+                            <p className="mb-1 mt-3 text-[rgb(23,23,23)] font-medium">
+                            Location 
+                            </p>
+                            <input
+                              type="text"
+                              name="location"
+                              value={formData.location}
+                              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                              autoComplete="off"
+                              placeholder="Bandra, Mumbai"
+                              className="w-full px-3 py-2 border-[1px]  rounded-md text-gray-700 outline-none  focus:border-[#59e372] "
+                            />
+                          </label>
+          </div>
+          </div>
+          {/* --------------------------------- ************** -------------------------- */}
+
+
+     {/* -------------------- Coding Information section ----------------------------- */}
+     <div className='flex flex-col justify-center items-start'>
+          <div className='my-4 w-[90%]  sm:w-full border-2 px-4 pb-2 bg-gray-200 rounded'>
+          <h1 className=' text-2xl font-bold flex my-2 '>Coding</h1>
+              <label className="py-5">
+                            <p className="mb-1 mt-3 text-[rgb(23,23,23)] font-medium">
+                           Currently Learning
+                            </p>
+                            <p className=' text-[13px] text-[rgb(67,66,66)]'>What are you learning right now?</p>
+                            <textarea name="currentLearning" placeholder='...'
+                             id="currentLearning" cols="30" rows="10" 
+                             className='w-full resize-none rounded h-[100px] sm:h-[70px] focus:outline-none mt-2 focus:border-[#59e372] ' 
+                             value={formData.currentLearning}
+                             onChange={(e) => setFormData({ ...formData, currentLearning: e.target.value })}
+                             maxLength={'100'} 
+                             minLength={'0'} >
+                             </textarea>
+                          </label>
+          
+          
+              <label className="py-5">
+                            <p className="mb-1 mt-3 text-[rgb(23,23,23)] font-medium">
+                            Available for 
+                            </p>
+                            <p className=' text-[13px] text-[rgb(67,66,66)]'>What kinds of collaborations or discussions are you available for?</p>
+                            <textarea name="available" placeholder='...'
+                             id="available" cols="30" rows="10" 
+                             className='w-full resize-none rounded h-[100px] sm:h-[70px]  focus:outline-none mt-2 focus:border-[#59e372] ' 
+                             value={formData.available}
+                             onChange={(e) => setFormData({ ...formData, available: e.target.value })}
+                             maxLength={'100'} 
+                             minLength={'0'} >
+                             </textarea>
+                          </label>
+
+                          <label className="py-5">
+                            <p className="mb-1 mt-3 text-[rgb(23,23,23)] font-medium">
+                            skills/Language 
+                            </p>
+                            <p className=' text-[13px] text-[rgb(67,66,66)]'>What tools and languages are you most experienced with? </p>
+                            <textarea name="skillLanguage" placeholder='...'
+                             id="skillLanguage" cols="30" rows="10" 
+                             className='w-full resize-none rounded h-[100px] sm:h-[70px]  focus:outline-none mt-2 focus:border-[#59e372] ' 
+                             value={formData.skillLanguage}
+                             onChange={(e) => setFormData({ ...formData, skillLanguage: e.target.value })}
+                             maxLength={'100'} 
+                             minLength={'0'} >
+                             </textarea>
+                          </label>
+
+          </div>
+          </div>
+
+
+
+     {/* -------------------------**************************----------------------------- */}
+
+     {/* ----------------------------- Work Box ------------------------------- */}
+
+     <div className='flex flex-col justify-center items-start'>
+          <div className='my-4 w-[90%]  sm:w-full border-2 px-4 pb-2 bg-gray-200 rounded'>
+          <h1 className=' text-2xl font-bold flex my-2 '>Work</h1>
+          <label className="py-5">
+                            <p className="mb-1 mt-3 text-[rgb(23,23,23)] font-medium">
+                            Work 
+                            </p>
+                            <textarea name="work" placeholder='What do you do? Example CEO at V.Tech'
+                             id="work" cols="30" rows="10" 
+                             className='w-full resize-none rounded h-[80px] sm:h-[50px] focus:outline-none mt-2 focus:border-[#59e372] ' 
+                             value={formData.work}
+                             onChange={(e) => setFormData({ ...formData, work: e.target.value })}
+                             maxLength={'100'} 
+                             minLength={'0'} >
+                             </textarea>
+                          </label>
+          <label className="py-5">
+                            <p className="mb-1 mt-3 text-[rgb(23,23,23)] font-medium">
+                            Education 
+                            </p>
+                            <textarea name="education" placeholder='Where did you go to school'
+                             id="education" cols="30" rows="10" 
+                             className='w-full resize-none rounded h-[80px] sm:h-[50px] focus:outline-none mt-2 focus:border-[#59e372] ' 
+                             value={formData.education}
+                             onChange={(e) => setFormData({ ...formData, education: e.target.value })}
+                             maxLength={'100'} 
+                             minLength={'0'} >
+                             </textarea>
+                          </label>
+          </div>
+          </div>
+
+     {/* ----------------------------- ***************------------------------------- */}
+
+     {/* ----------------------------------- Branding section ------------------------------ */}
+  
+     <div className='flex flex-col justify-center items-start'>
+          <div className='my-4 w-[90%]  sm:w-full border-2 px-4 pb-2 bg-gray-200 rounded'>
+          <h1 className=' text-2xl font-bold flex my-2 '>Brand</h1>
+           <p className=' text-[13px] text-[rgb(67,66,66)]'>Used for backgrounds, borders etc. </p>
+           <div className='border-2 border-gray-500 flex flex-row justify-start items-center bg-gray-50 '>
+           <input type="color" name="brandColor" id="brandColor" className='w-[40px] h-[40px] cursor-pointer ' value={formData.brandColor}  onChange={(e) => setFormData({ ...formData, brandColor: e.target.value })} />
+             <p className='ml-2'>{formData?.brandColor}</p>
+           </div>
+          </div>
+          </div>
+
+     {/* ----------------------------------- **************** ------------------------------ */}
   </form>
 
          <div className='text-[#AB2163] mt-6'>If you wants to delete your account?</div>

@@ -10,8 +10,8 @@ import userLogo from '../assets/userLogo.jpg';
           link: "/dashboard"
         },
         {
-          linkText: "Facebook",
-          link: "https://www.facebook.com"
+          linkText: "Saved Posts",
+          link: "/MySaveList"
         },
         {
           linkText: "Twitter",

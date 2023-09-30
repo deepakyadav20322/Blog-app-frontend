@@ -60,9 +60,9 @@ const FirstDoLoginPopUp = ({setAllowedPopUp}) => {
                       </Dialog.Title>
                       <div className="mt-2 text-center">
                         <div className="text-sm text-gray-500">
-                        Please login to access this feature. <Link className='text-blue-400'>Login</Link>
+                        Please login to access this feature. <Link to={'/login'} className='text-blue-400'>Login</Link>
                         <div className='text-center font-medium'>Or</div>
-                        <div>Create an account <Link className='text-blue-400'>SignUp</Link></div>
+                        <div>Create an account <Link to={'/register'} className='text-blue-400'>SignUp</Link></div>
                         </div>
                       </div>
                     </div>

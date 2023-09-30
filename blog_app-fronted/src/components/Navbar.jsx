@@ -1,13 +1,13 @@
 import React,{useContext, useEffect} from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png'
 import { Authcontext } from '../context/UserContext';
 import userLogo from '../assets/userLogo.jpg';
 import DropDownAllLinks from './DropDownAllLinks';
 
 const Navbar = () => {
+
     console.log('navbar')
-    const    navigate = useNavigate()
     const  { isAuthenticated ,setIsAuthenticated,setLoginUser} = useContext(Authcontext);
     const token = localStorage.getItem('blogAuth');
     useEffect(()=>{
@@ -23,7 +23,9 @@ const Navbar = () => {
     })
    
   return (
-    <nav className="flex item-center justify-between pt-3 pb-1 border-b-[1px] ">
+    <>
+    <div className='container mx-auto pl-2 pr-2'>
+    <nav className="flex item-center justify-between pt-3 pb-2 border-b-[1px] ">
         <Link to={"/"}>
             <div className="flex items-center cursor-pointer">
                 <img src={logo} height={35} width={40} />
@@ -63,6 +65,9 @@ const Navbar = () => {
          
         </ul>
     </nav>
+    </div>
+     <Outlet />
+     </>
 );
 }
 
