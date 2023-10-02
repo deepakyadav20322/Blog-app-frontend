@@ -10,6 +10,18 @@
   scroll-behavior: smooth;
 }
 
+ /* this class set the content width of editor-----  */
+.jodit-wysiwyg {
+  max-width: 700px; /* Set the maximum visible width of the editor */
+  word-wrap: break-word; /* Ensure text wraps to the next line */
+}
+
+
+.custome-container{
+  max-width: 1320px;
+  width: 100%;
+}
+
 .userProf::before {
   content: "";
   position: absolute;
@@ -48,6 +60,49 @@
 .custome-shadow{
   box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 }
+
+
+/* ScrollButtons.css */
+.scroll-buttons-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: none;
+}
+
+.scroll-buttons-container.visible {
+  display: flex;
+  flex-direction: column;
+}
+
+.scroll-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-11px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
+}
+
+.bounce-animation {
+  animation: bounce 1s infinite;
+}
+
+
+
+
 
 /* ================================= Admin Css  ==================================== */
 

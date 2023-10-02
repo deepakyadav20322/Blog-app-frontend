@@ -4,7 +4,7 @@ import CategoryTabs from '../components/CategoryTabs'
 import { Authcontext } from '../context/UserContext'
 import {toast,Toaster} from 'react-hot-toast'
 import axios from 'axios'
-
+import ScrollUpDown from '../components/ScrollUpDown'
 
 
 const Home = () => {
@@ -35,9 +35,11 @@ useEffect(()=>{
     <>
     <div> 
       <CategoryTabs/>
+     
     <BlogList/>
     </div>
     <Toaster/>
+    <ScrollUpDown/>
     </>
   )
 }

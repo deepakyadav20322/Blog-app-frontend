@@ -7,7 +7,8 @@ const CategoryTabs = () => {
        const {loginUser} = useContext(Authcontext)
     const {pathname} =  useLocation()
   return (
-    <div className='mb-8 mt-4 flex items-center justify-between border-b-2 '>
+    <div className=''>
+    <div className='custome-container m-auto mb-1 mt-4 flex items-center justify-between border-b-2 '>
         <ul className='flex items-center'>
             <li className={`mr-6 pb-3 border-b-4 rounded-sm ${pathname=='/' ? 'border-primary text-primary': 'border-white text-gray-400'}`}><span className='cursor-pointer'>Node.Js</span></li>
             <li className='mr-6 pb-3 border-b-4 rounded-sm  '><span className='cursor-pointer'>Node.Js</span></li>
@@ -28,6 +29,7 @@ const CategoryTabs = () => {
                     className="outline-[#7b7a7a] px-2 py-1 ml-1 border-[1px] border-[#c7c6c6e4] rounded-sm"
                 />
             </div>
+    </div>
     </div>
   )
 }

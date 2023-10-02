@@ -1,20 +1,25 @@
 import React,{useEffect,useState} from 'react'
-import {AiOutlineHeart} from 'react-icons/ai'
+import {AiOutlineHeart, AiOutlineMail, AiTwotoneHeart} from 'react-icons/ai'
 import {FaRegCommentDots} from 'react-icons/fa'
-import {FaRegShareFromSquare} from 'react-icons/fa6'
 
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import {LuDot} from 'react-icons/lu'
 import axios from 'axios'
 import imag4 from '../assets/pexels-pixabay-220453.jpg'
 import FirstDoLoginPopUp from '../components/FirstDoLoginPopUp'
 import toast,{Toaster} from 'react-hot-toast'
 import { FiBookmark } from 'react-icons/fi'
-
+// It use to convert html content to readable content
+import DOMPurify from 'dompurify';
+import ScrollUpDown from '../components/ScrollUpDown'
+import ShareIconDropDown from '../components/ShareIconDropDown'
+import { baseURL } from '../config'
+import socket from '../helper/SocketConfig'
 
 const SingleBlog = () => {
 
-const baseURL = 'http://localhost:3001'
+
+// const baseURL = 'http://localhost:3001'
     const { blogId } = useParams();
     const [blog, setBlog] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -25,19 +30,88 @@ const baseURL = 'http://localhost:3001'
     const [isPostSaved, setIsPostSaved] = useState(false);
     const [showTooltip, setShowTooltip] = useState(false);
     const [showSaveTooltip, setSaveShowTooltip] = useState(false);
-
+    
     const [commentData, setCommentData] = useState({commentText:""});
     const [allPostedComment, setAllPostedComment] = useState([]);
+    const [allLikes, setAllLikes] = useState([]);
+    const [realTimeallLikes, setrealTimeAllLikes] = useState([]);
     const userId = JSON.parse(localStorage.getItem('blogUser'))?.user?._id;
     const blogUser = JSON.parse(localStorage.getItem('blogUser'))?.user;
     const token = JSON.parse(localStorage.getItem('blogAuth'))?.token;
-
+    const[followStatus,setFollowStatus] = useState(false);
+    const[allowedPopUp,setAllowedPopUp] = useState(false);
+    const[likeAllowedPopUp,setLikeAllowedPopUp] = useState(false);
+    const navigate = useNavigate();  
     const options = {
       timeZone: "Asia/Kolkata", // Indian Standard Time (IST)
       year: "numeric",
       month: "short",
       day: "numeric",
     };
+    const currentURL = window.location.href; // Get current URL and copy to clipboard
+    const likeStateToggle = realTimeallLikes.length>0 ?realTimeallLikes: allLikes;
+
+// -------------------------- Follow nad unfollow logic ---------------------------
+
+const UserFollow = async(id)=>{
+  try {
+    const res = await axios.get(`${baseURL}/user/userFollow/${id}`,{
+        headers:{
+        'Content-Type':'application/json',
+            Authorization:`Bearer ${token}`
+        }
+    });
+    if(res.status===200){
+        console.log('You are follow to writer successfull',res.data.data);
+        localStorage.setItem('blogUser',JSON.stringify({user:res.data.data}))
+        setFollowStatus(!followStatus);
+        setApiCalled(false);
+        toast.success(`You follow to  ${blog?.author.fname}  ${blog?.author.lname}`, {
+          duration:2500,
+          className:'toasti',
+          position:'bottom-right',
+          style:{
+            width:'320px'
+          }
+        })
+        socket.emit('userFollow',  {user:res.data.data });
+    }
+  } catch (error) {
+    console.log("UserFollow error",error);
+  }
+}
+const UserUnFollow = async(id)=>{
+  try {
+    const res = await axios.get(`${baseURL}/user/userUnFollow/${id}`,{
+        headers:{
+        'Content-Type':'application/json',
+            Authorization:`Bearer ${token}`
+        }
+        });
+    if(res.status===200){
+        console.log('You are Unfollow to writer successfull',res.data.data);
+        localStorage.setItem('blogUser',JSON.stringify({user:res.data.data}))
+        setFollowStatus(!followStatus)
+        setApiCalled(false);
+        toast.success(`You Unfollow to ${blog?.author.fname}  ${blog?.author.lname}`, {
+          duration:2500,
+          className:'toasti',
+          position:'bottom-right',
+          style:{
+            width:'320px'
+          }
+        } )
+        socket.emit('userUnFollow', {user:res.data.data });
+    }
+  } catch (error) {
+    console.log("UserUnFollow error",error);
+  }
+}
+
+
+// ---------------------------------------------------------------------------------
+
+     
 
     useEffect(() => {
       if (!apiCalled) {    
@@ -49,20 +123,100 @@ const baseURL = 'http://localhost:3001'
             console.log("single blog post => ",res.data);
             setBlog(res.data);
             setAllPostedComment((res.data.comments).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+            setAllLikes(res.data.likes);
             setLoading(false)
         }
       } catch (error) {
-        console.log('error fetchig single post')
-                 toast.success('error 400');
+        if (error.response && error.response.status === 400 && error.response.data.error=='Invalid post ID') {
+       
+          const errorMessage = (error.response.data.error);
+          toast.error(errorMessage);
+           navigate('/Eroor')
+        } else {
+          toast.error('Sothing went wrong!');
+      }
+        console.log('error fetchig single post',error)
+                 
                  setLoading(false)
    }
       setApiCalled(true);
     }
 fetchSingleBlogPost();
+console.log("status")
 }
-    }, [blogId]);
+},[blogId,followStatus]);
+
+// ---------------------------------Socket connetion ---------------------------------------
+
+useEffect(() => {
+  // Listen for real-time postLiked events
+  socket.on('postLiked', (likes) => {
+    console.log('socket like run',likes)
+    setrealTimeAllLikes(likes)
+  });
+
+  // Listen for real-time postDisliked events
+  socket.on('postUnliked', (likes) => {
+    console.log('socket unlike run',likes)
+    setrealTimeAllLikes(likes)
+  });
+
+  return () => {
+    socket.off('postLiked');
+    socket.off('postUnliked');
+  };
+  
+}, [blogId]);
 
 
+const handleLike = async(id) => {
+
+    try {
+      const res = await axios.get(`${baseURL}/post/likePost/${id}`,{
+        headers:{
+        'Content-Type':'application/json',
+            Authorization:`Bearer ${token}`
+        }
+        });
+     if(res.status==200){
+      console.log(res.data.data.likes);
+        setAllLikes(res.data.data.likes);
+    
+     }
+    // Emit a likePost event to the server
+    socket.emit('likePost',res.data.data.likes);
+    } catch (error) {
+      console.log(error)
+    }
+    
+  
+};
+
+const handleUnlike = async(id) => {
+
+    try {
+      const res = await axios.get(`${baseURL}/post/unlikePost/${id}`,{
+        headers:{
+        'Content-Type':'application/json',
+            Authorization:`Bearer ${token}`
+        }
+        });
+     if(res.status==200){
+      console.log('unlike post',res.data.data.likes);
+     
+
+        setAllLikes(res.data.data.likes);
+     }
+    // Emit a likePost event to the server
+    socket.emit('UnlikePost',res.data.data.likes);
+    } catch (error) {
+      console.log(error)
+    }
+    
+  
+};
+
+// -------------------------------------------------------------------------
     const handleTextAreaClick = (e)=>{
       e.preventDefault()
       if(token){
@@ -207,7 +361,7 @@ useEffect(() => {
 //-----------------------------------------------------------------------
   
     if (loading) {
-    return(  <div className='border border-blue-300 shadow rounded-md p-4 max-w-[700px] w-full mx-auto'>
+    return(  <div className='border border-blue-300 shadow rounded-md py-4 px-2 max-w-[700px] w-full mx-auto'>
       <div className='animate-pulse flex space-x-4'>
         <div className='rounded-full bg-slate-200 h-10 w-10'></div>
         <div className='flex-1 space-y-6 py-1'>
@@ -223,6 +377,8 @@ useEffect(() => {
       </div>
     </div>)
     }
+
+    
   if(!blog && !loading){
    <div className='flex justify-center items-center min-h-[100vh] md:min-h-[40vh]'>
                  <div className='border-2 border-gray-300 rounded flex flex-row justify-center items-center p-10'>
@@ -235,18 +391,18 @@ useEffect(() => {
     {blog && (<div>
           <div className='break-words bg-[#F5F5F5]'>
             <div className='flex justify-center pb-4 '>
-                <div className='max-w-[700px] px-3 sm:px-10  w-full bg-white'>
+                <div className='max-w-[730px] px-3 sm:px-6  w-full bg-white'>
                  <div className='block w-full'>
                     <h1 className='w-full tracking-tighter-[-0.011em] sm:tracking-tighter-[-0.014em] sm:leading-[2.8rem] leading-9 mb-8 sm:mb-6 sm:text-[40px] text-3xl font-bold text-[#242424] sm:mt-12 mt-8'>{blog.title}</h1>
                     <div className=''>
                         <div className='flex flex-col justify-between'>
             <div className='block w-full'>
                 <div className='flex '>
-                    <div className=''>
+                    <Link to={`/writer/${blog?.author._id}`} className=''>
                         <img src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" className="h-10 w-12 border-2 mt-1 rounded-[50%] bg-gray-50" />
-                    </div>
+                    </Link>
                     <div className='ml-3 w-full flex flex-col'>
-                        <div>{(blog.author).fname} {" "}{(blog.author).lname}</div>
+                        <Link className='hover:text-blue-500' to={`/writer/${blog?.author._id}`}>{(blog.author).fname} {" "}{(blog.author).lname}</Link>
                         <div><span className='mx-1'>Follow</span><span>{new Date(blog.createdAt).toLocaleString("en-US", options)}</span></div>
 
                     </div>
@@ -258,9 +414,11 @@ useEffect(() => {
             </div>
             <div className='flex flex-row justify-between mt-7 border-t-[0.2px] border-b-[0.2px] border-gray-200 py-2'>
                <div className='flex flex-row gap-4'>
-               <span className='hover:text-red-500'>
-                    <AiOutlineHeart size={25} className='inline cursor-pointer hover:text-red-500'/>
-                    15
+               <span className='hover:text-black'>
+                   {!token  && <AiOutlineHeart size={25}  onClick={()=>setLikeAllowedPopUp(true)} className='inline cursor-pointer text-green-500'/>}
+                   {likeAllowedPopUp?<FirstDoLoginPopUp setAllowedPopUp={setLikeAllowedPopUp} />:""}
+                 {token && likeStateToggle?.length>=0  && likeStateToggle?.includes(userId)?  <AiTwotoneHeart onClick={()=>handleUnlike(blog._id)} size={25} className='inline cursor-pointer text-red-500'/>:(token &&<AiOutlineHeart onClick={()=>handleLike(blog._id)} size= {25} className='inline cursor-pointer'/>)}
+                    {likeStateToggle?.length}
                     </span>
                     <span className='relative'>
                     <a href='#comment-section' className='hover:text-blue-500' onMouseEnter={toggleTooltip} onMouseLeave={toggleTooltip}>
@@ -275,7 +433,8 @@ useEffect(() => {
                  </div>
                  <div className='flex flex-row gap-4'>
                     
-                    <FaRegShareFromSquare size={25} className='inline cursor-pointer hover:text-green-500' />
+                 {/* <FaRegShareFromSquare size={25} className='inline cursor-pointer hover:text-green-500' /> */}
+             <ShareIconDropDown currentURL={currentURL} className='inline cursor-pointer hover:text-green-500' />
                  
                  <span className='relative'>
                     <FiBookmark onClick={handleSavePostIcon} size={22}  onMouseEnter={toggleSecondTooltip} onMouseLeave={toggleSecondTooltip}  className={`${isPostSaved?'fill-black':""}  inline cursor-pointer`}/>
@@ -289,14 +448,48 @@ useEffect(() => {
                     </div>
                  </div>
                  <figure className='mt-10 object-cover flex flex-col items-center justify-center'>
-                 <img src="https://www.w3schools.com/tags/pic_trulli.jpg" alt="Trulli" className='w-full max-w-[640px]'/>
+                 <img src={`${baseURL}/BlogImages/${(blog.mainImage)}`} alt="Trulli" className='w-full max-w-[640px]'/>
                   <figcaption className="text-center">Fig.1 - Trulli, Puglia, Italy.</figcaption>
                  </figure>
                  <div className='blog-main-content my-3'>
-                   {blog.content}
-                    
+                   {/* {blog.content} */}
+                   {/*----- convert html content to readable content-----------  */}
+                   <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(blog.content) }} />
+
+                    <div className='flex justify-start items-center gap-x-4 gap-y-1 my-3 ml-4 flex-wrap'>
+                    {(blog.tags).map((tag,id)=>(
+                    <Link to={'#'} key={id} 
+                    href=""
+                    className="relative inline-block z-10 rounded-full bg-gray-100 text-base px-4 py-2  font-normal text-gray-600 hover:bg-gray-200"
+                    >
+                    {tag}
+                    </Link>
+                    ))}
+                    </div>
                  </div>
 
+    {/* ------------------------ Bottom profile and follow button show ----------------------------------- */}
+                    <div className='bg-[#F9F9F9] h-64 w-full px-8 py-10 border-b-2 border-gray-300 my-4 flex flex-col justify-start'>
+                      <div className='flex flex-row justify-between items-center'>
+                        <img src="https://imgv3.fotor.com/images/gallery/Realistic-Male-Profile-Picture.jpg" alt="" className='h-[90px] w-[90px] rounded-full border-2 object-cover' />
+                        <div className='flex flex-row justify-center items-center gap-x-3'>
+                        {!token   && (<button onClick={()=>setAllowedPopUp(true)} className='bg-[#1A8917] text-white px-3 py-2 font-bold rounded-[20px]'>Follow</button>)}
+                        {allowedPopUp?<FirstDoLoginPopUp setAllowedPopUp={setAllowedPopUp} />:""}
+                        
+                          {(!token ?"" : (blog.author?.followers)?.length !== 0  && (blog.author?._id!==(userId)) && blog.author?.followers?.includes(userId))?
+                           ( <button onClick={()=>UserUnFollow(blog.author?._id)} className='bg-[#1A8917] text-white px-3 py-2 font-bold rounded-[20px]'>Following</button>):
+                           ((token && blog.author?._id!==(userId)) &&<button onClick={()=>UserFollow(blog.author._id)} className='bg-[#1A8917] text-white px-3 py-2 font-bold rounded-[20px]'>Follow</button>)
+                          }
+                        
+                        <AiOutlineMail size={35} color='white' className='p-1 cursor-pointer rounded-full bg-[#1A8917] flex items-center h-full' />
+                        </div>
+                      </div>
+                       <p className='text-2xl font-bold mt-2'>Written by {blog.author.fname}{blog.author.lname}</p>
+                      <p>{blog.author?.followers.length} Followers</p>
+                      <p className=' text-sm mt-3 '>{blog.author?.bio}</p>
+                    </div>
+
+        {/* --------------------------------------- Comment section start ------------------------------------ */}
               <section id='comment-section' className='comment-section border-t-2 border-gray-400 mt-2 sm:mt-10'>
                 <div className='mb-3'>
                 <div className=' text-2xl font-medium ont-bold mt-6 mb-3'> Top comments ({allPostedComment?.length})</div>
@@ -319,7 +512,8 @@ useEffect(() => {
                           <div key={idx} className= ' flex flex-row justify-start items-start gap-x-1 my-4'>
                           <div className=''><img src={imag4} alt="userImg" className=' object-cover  rounded-[50%] h-[48px] w-[45px] border-2' /></div>
                           <div className='w-full border-[1px] rounded border-gray-300'>
-                            <div className='text-sm flex flex-row justify-start items-center my-3 pl-2 border-b-[1px] border-gray-300'><span className='font-medium'>{comment.author?.fname}{" "}{comment.author?.lname}</span> <span><LuDot className="inline" size={20} /></span> <span>{new Date(comment.createdAt).toLocaleString("en-US", options)}</span> <span className='ml-2'>Edited on March 6 2023</span>
+                            <div className='text-sm flex flex-row justify-start items-center my-3 pl-2 border-b-[1px] border-gray-300'><span className='font-medium'>{comment.author?.fname}{" "}{comment.author?.lname}</span> <span><LuDot className="inline" size={20} /></span> <span>{new Date(comment.createdAt).toLocaleString("en-US", options)}</span> 
+                            {/* <span className='ml-2'>Edited on March 6 2023</span> */}
                             </div>
                             <div className='mx-3 my-1'>
                             <div>{comment.commentText}</div>
@@ -338,7 +532,11 @@ useEffect(() => {
            
           
     </div>)}
-    
+
+    {/* This component is use to down the whole page  */}
+    <div className='hidden md:block'>
+    <ScrollUpDown  />
+    </div>
     <Toaster/>
     </>
           

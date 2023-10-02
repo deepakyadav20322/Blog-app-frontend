@@ -38,7 +38,9 @@ const UdashboardPostShow = ({userSpecificPosts}) => {
                     </select>
                   </div>
                 </div>
-
+                 {userSpecificPosts.length == 0 && <div className='h-60 w-full mt-2 border-2 text-center flex flex-row justify-center items-center border-gray-400 rounded '>
+                         No any post publish yet.
+                 </div> }
                 { userSpecificPosts.map((post)=>(
                 <div key={post._id} className='posts-container flex-col md:flex-row flex justify-between items-start border-2 p-4 rounded bg-white m-2'>
                   <div><Link to={`/singleBlog/${post._id}`} className='text-[#3B49DF] font-bold'>{post.title}</Link>

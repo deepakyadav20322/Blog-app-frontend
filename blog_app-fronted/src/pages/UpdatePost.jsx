@@ -1,8 +1,8 @@
-import React, { useState ,useEffect,useContext } from "react";
+import React, { useState ,useEffect,useContext,useRef } from "react";
 import { Authcontext } from "../context/UserContext";
 import axios from "axios";
 import { useParams ,useNavigate} from "react-router-dom";
-
+import JoditEditor from 'jodit-react';
 
 const UpdatePost = () => {
 
@@ -15,7 +15,7 @@ const UpdatePost = () => {
   const token = JSON.parse(localStorage.getItem('blogAuth')).token
   const userId =  JSON.parse(localStorage.getItem('blogUser')).user._id ;
   const naviagte = useNavigate()
-
+  const editor = useRef(null);
 // ------------------------------------------------------------------------------------------------
  
   // Fetch the post data based on the postId and populate the form fields
@@ -173,7 +173,7 @@ const handleSubmit = async (e) => {
               Main content
             </label>
 
-            <textarea
+            {/* <textarea
              value={formData.content}
              onChange={(e) => setFormData({ ...formData, content: e.target.value })}
               name="content"
@@ -183,7 +183,16 @@ const handleSubmit = async (e) => {
               minLength={"300"}
               maxLength={"10000"}
               className="w-full min-h-[100px]"
-            ></textarea>
+            ></textarea> */}
+
+            <JoditEditor
+                ref={editor}
+                value={formData.content} // Set the initial content value
+                onChange={(newContent) => setFormData({ ...formData, content: newContent })}
+                name="content"
+                id="content"
+              />
+
           </div>
 
           {/* ------------------------- Tags selection------------------------------------------- */}

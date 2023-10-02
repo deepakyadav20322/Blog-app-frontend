@@ -34,9 +34,8 @@ console.log(post)
  },[])
 
   return (
-    // <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t bg-black border-gray-200 pt-10 sm:mt-16 sm:pt-4 lg:mx-0 lg:max-w-none lg:grid-cols-2 ">
-    // {posts.map((post) => (
-      <article key={post._id} className="flex max-w-xl flex-col items-start justify-between p-3 rounded shadow-sm border border-gray-300">
+  
+      <article key={post._id} className="flex max-w-xl flex-col items-start justify-between p-3 rounded-[7px] shadow-sm border border-gray-300 active:border-blue-600 active:border-4 bg-white">
        
         
 
@@ -58,7 +57,7 @@ console.log(post)
           </div>
         </div>
         <div className="group relative">
-          <h3 className="mt-3 text-2xl font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
+          <h3 className="mt-2 text-2xl font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
             <Link to={`/singleBlog/${post._id}`} className='leading-[2rem]' >
               <span className="absolute inset-0" />
               {post.title}
@@ -66,7 +65,7 @@ console.log(post)
           </h3>
          
          
-        <p className="mt-5 font-sans mb-2 line-clamp-3 text-sm leading-6 text-gray-600">{post.description}</p>
+        <p className="mt-3 font-sans mb-2 line-clamp-3 text-sm leading-6 text-gray-600">{post.description}</p>
         </div>
         
         <div className="flex items-center justify-between gap-x-4 w-full">
@@ -81,12 +80,10 @@ console.log(post)
          </Link>
       ))}
       </div>
-      <span>  <FiBookmark onClick={handleSavePostIcon} size={22} color= 'black' className='inline cursor-pointer'/></span>
+      {/* <span>  <FiBookmark onClick={handleSavePostIcon} size={22} color= 'black' className='inline cursor-pointer'/></span> */}
        </div>
        {( postSavedAllowedPopUp) && <FirstDoLoginPopUp  setAllowedPopUp={setPostSavedAllowedPopUp} />}
       </article>
-  //   ))}
-  // </div>
   
   )
 }

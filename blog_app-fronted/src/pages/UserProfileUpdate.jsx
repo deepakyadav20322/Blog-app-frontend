@@ -87,7 +87,8 @@ const UserProfileUpdate = () => {
       if (response.status === 200) {
         console.log('User updated successfully');
         localStorage.setItem('blogUser',JSON.stringify({user:response.data.data}))
-        navigate('/')
+        localStorage.setItem('updateMessage','Profile Updated successfully');
+        navigate('/dashboard')
       } else {
         console.error('Failed to update user');
       }
@@ -129,7 +130,7 @@ const UserProfileUpdate = () => {
       <div className='flex flex-row justify-between items-center '>
         <h2 className='font-medium text-xl mb-4'>Personal Information</h2>
         <div className='flex flex-row gap-x-6'>
-          <button className='px-3 py-2 bg-[#161D29] rounded text-white font-medium taxt-medium'>Cancel</button>
+          {/* <button className='px-3 py-2 bg-[#161D29] rounded text-white font-medium taxt-medium'>Cancel</button> */}
           <button type='submit' className='px-4 py-2 bg-primary rounded text-white font-medium taxt-medium'>Save</button>
         </div>
       </div>

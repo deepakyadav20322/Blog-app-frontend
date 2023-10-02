@@ -1,15 +1,20 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useRef,useContext, useMemo } from "react";
 import { Authcontext } from "../context/UserContext";
 import axios from "axios";
+import JoditEditor from 'jodit-react';
 
 
 const CreatePost = () => {
   const { setLoginUser } = useContext(Authcontext);
-  const initialValue = { title: "", content: "", description: "", tags:[],author:"" };
+  const initialValue = { title: "", content: "", description: "", tags:[],author:"",mainImage:null };
   const [formData, setFormData] = useState(initialValue);
   const [selectedTags, setSelectedTags] = useState([]);
   const token = JSON.parse(localStorage.getItem('blogAuth')).token
-  const baseURL = 'http://localhost:3001'
+  const baseURL = 'http://localhost:3001';
+
+ 
+  const editor = useRef(null);
+
 
 
   const handleSubmit = async (e) => {
@@ -20,7 +25,6 @@ const CreatePost = () => {
          }
         formData.tags = selectedTags
         formData.author = JSON.parse(localStorage.getItem('blogUser')).user._id ;
-    // Dispatch the createPostAsync action with the form data
     console.log(formData)
     console.log("write api call?")
     
@@ -29,7 +33,7 @@ const CreatePost = () => {
       const response = await axios.post(`${baseURL}/post/createPost`, formData, {
         headers: {
           'Authorization': `Bearer ${token}` ,
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         }
       });
       if(response.status===200){
@@ -106,6 +110,21 @@ const CreatePost = () => {
               placeholder="Short range title"
             />
           </div>
+
+          <div className="flex flex-col justify-cenetr items-start">
+            <label htmlFor="title" className="text-xl font-medium mt-3">
+              Front Image
+            </label>
+            <input
+              type="file"
+              onChange={(e) =>{ setFormData({ ...formData, mainImage: e.target.files[0] });console.log(e.target.files[0] )}}
+              name="mainImage"
+              id="mainImage"
+              className="outline-none border-2 border-gray-300 rounded w-full p-3  "
+              placeholder="Short range title"
+            />
+          </div>
+
           <div className="flex flex-col justify-cenetr items-start my-4">
             <label
               htmlFor="discription"
@@ -128,12 +147,12 @@ const CreatePost = () => {
             ></textarea>
           </div>
 
-          <div className="flex flex-col justify-cenetr items-start my-4">
+          <div className="flex flex-col justify-cenetr items-start my-4 w-full w">
             <label htmlFor="content" className="text-2xl font-medium mt-2">
               Main content
             </label>
 
-            <textarea
+            {/* <textarea
              value={formData.content}
              onChange={(e) => setFormData({ ...formData, content: e.target.value })}
               name="content"
@@ -143,7 +162,16 @@ const CreatePost = () => {
               minLength={"300"}
               maxLength={"10000"}
               className="w-full min-h-[100px]"
-            ></textarea>
+            ></textarea> */}
+          <JoditEditor
+            ref={editor}
+            value={formData.content} // Set the initial content value
+            onChange={(newContent) => setFormData({ ...formData, content: newContent })}
+            name="content"
+            id="content"
+            tabIndex={1}
+          />
+
           </div>
 
           {/* ------------------------- Tags selection------------------------------------------- */}

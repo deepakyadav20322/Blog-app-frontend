@@ -26,6 +26,7 @@ import WriterProfilePage from './pages/WriterProfilePage';
 
 
 
+
 function App() {
  
   return (<>
@@ -68,6 +69,7 @@ function App() {
           </Route>
 
           {/* 404 Route */}
+          
           <Route path='/Error' element={<ErrorFour />} />
           <Route path='/*' element={<ErrorFour />} />
 

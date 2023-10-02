@@ -10,6 +10,7 @@ const ErrorFour = () => {
 
   return (
 <>
+           <div className='py-4 w-full bg-gray-300 text-xl font-bold text-center border-b-2 border-gray-400'>Error Page</div>
             <div className='flex flex-col items-center justify-center w-full m-auto md:mb-6 px-5 md:px-1 md:w-[680px] min-h-[80vh]'>
            <div className='pl-1'>PAGE NOT FOUND </div>
            <div className='text-[#757575] leading-[88px] text-[85px]'>404</div>

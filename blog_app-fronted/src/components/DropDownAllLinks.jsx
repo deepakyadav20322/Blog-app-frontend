@@ -3,6 +3,7 @@ import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { Link } from 'react-router-dom';
 import userLogo from '../assets/userLogo.jpg';
+import { baseURL } from '../config';
 
     const profileLinks = [
         {
@@ -14,16 +15,8 @@ import userLogo from '../assets/userLogo.jpg';
           link: "/MySaveList"
         },
         {
-          linkText: "Twitter",
-          link: "https://www.twitter.com"
-        },
-        {
-          linkText: "Instagram",
-          link: "https://www.instagram.com"
-        },
-        {
           linkText: "Sign out",
-          link: "http://localhost:5173/logout"
+          link:'/logout'
         }
       ];
       

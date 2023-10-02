@@ -10,6 +10,8 @@ import {CgClose} from 'react-icons/cg'
 import axios from 'axios'
 import toast,{Toaster} from 'react-hot-toast'
 import CommentPopUp from '../components/FirstDoLoginPopUp'
+import ShowAllFollowers from '../components/ShowAllFollowers'
+import ShowAllFollowing from '../components/ShowAllFollowing'
 
 
 
@@ -30,10 +32,17 @@ const UserDashboard = () => {
 
   useEffect(() => {
     const loginMessage = localStorage.getItem('loginMessage');
+    const updateMessage = localStorage.getItem('updateMessage');
     
     if (loginMessage !== null) {
       toast.success(loginMessage,{duration:3000});
       localStorage.removeItem('loginMessage');
+     
+    }
+    if (updateMessage !== null) {
+      toast.success(updateMessage,{duration:3000});
+      localStorage.removeItem('updateMessage');
+     
     }
   }, []);
    
@@ -84,7 +93,7 @@ const UserDashboard = () => {
     <>
     
       <div className='bg-[#F5F5F5] min-h-screen relative'>
-                 
+                
         {/* ======================= (stsrt)   Dashboard navigation bar for small screes========================= */}
         <div className={`left-side absolute top-[-10px] left-0 md:hidden transition-all duration-300 ease-in-out  ${dashSmallNavOpen?'block':"hidden"} z-10` }>
          
@@ -104,7 +113,7 @@ const UserDashboard = () => {
         {/* ======================= (END)   Dashboard navigation bar for small screes========================= */}
 
         <div className=' max-w-[1280px] m-auto border-2'>
-            <h1 className='my-2 text-2xl md:text-3xl font-bold md:ml-6 block md:hidden'> <span onClick={()=>setDashSmallNavOpen(true)}><VscThreeBars className="inline ml-2 mr-5 cursor-pointer" /></span>User Dashboard</h1>
+            <h1 className='my-2 text-2xl md:text-3xl font-bold md:ml-6 block'> <span onClick={()=>setDashSmallNavOpen(true)}><VscThreeBars className="inline ml-2 mr-5 cursor-pointer md:hidden" /></span>User Dashboard</h1>
             <div className='flex flex-row justify-start items-start w-full mt-10'>
             <div className='left-side hidden md:block '>
               <div className='left-navigation min-h-[90vh] rounded bg-white border-2 border-gray-400 w-[300px] mt-2'>
@@ -126,10 +135,12 @@ const UserDashboard = () => {
               {renderValue==='Post'?<UdashboardPostShow userSpecificPosts={userSpecificPosts} />:""}
               {renderValue==='Profile'?<UserProfile/>:""}
               {renderValue==='Analytics'?<UdashboardPostStats/>:""}
+              {renderValue==='Followers'?<ShowAllFollowers/>:""}
+              {renderValue==='Following'?<ShowAllFollowing/>:""}
               {/* {renderValue==='Post'?<UdashboardPostShow/>:""} */}
             </div>
             </div>
-
+           
         </div>
       </div>
       <Toaster/>

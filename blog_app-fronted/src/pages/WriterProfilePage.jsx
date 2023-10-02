@@ -11,6 +11,7 @@ import { baseURL } from '../config';
 import formatDate from '../components/DateFormate';
 import FirstDoLoginPopUp from '../components/FirstDoLoginPopUp';
 import toast,{Toaster} from 'react-hot-toast'
+import getRandomColor from '../helper/RandomColorGenerator';
 
 
 
@@ -25,6 +26,10 @@ const WriterProfilePage = () => {
    const token = JSON.parse(localStorage.getItem('blogAuth'))?.token;
    const selfUserId = JSON.parse(localStorage.getItem('blogUser'))?.user._id;
    const navigate = useNavigate();
+
+
+   const randomColor = getRandomColor()
+
    const  fetchUserData = async()=>{
     try {
         const res = await axios.get(`${baseURL}/user/getRandomUserInfo/${userId}`);
@@ -72,8 +77,18 @@ const WriterProfilePage = () => {
                 }
             });
             if(res.status===200){
-                console.log('You are follow to writer successfull');
-                setFollowStatus(!followStatus)
+                console.log('You are follow to writer successfull',res.data.data);
+                localStorage.setItem('blogUser',JSON.stringify({user:res.data.data}))
+                setFollowStatus(!followStatus);
+                toast.success(`You follow to ${userInfo.fname}  ${userInfo.lname}`, {
+                  duration:2500,
+                  className:'toasti',
+                  position:'bottom-right',
+                  style:{
+                    width:'320px'
+                  }
+                } )
+
             }
           } catch (error) {
             console.log("UserFollow error",error);
@@ -88,8 +103,17 @@ const WriterProfilePage = () => {
                 }
                 });
             if(res.status===200){
-                console.log('You are Unfollow to writer successfull');
+                console.log('You are Unfollow to writer successfull',res.data.data);
+                localStorage.setItem('blogUser',JSON.stringify({user:res.data.data}))
                 setFollowStatus(!followStatus)
+                toast.success(`You Unfollow to ${userInfo.fname}  ${userInfo.lname}`, {
+                  duration:2500,
+                  className:'toasti',
+                  position:'bottom-right',
+                  style:{
+                    width:'320px'
+                  }
+                } )
             }
           } catch (error) {
             console.log("UserUnFollow error",error);
@@ -118,10 +142,10 @@ const WriterProfilePage = () => {
                 ( (userInfo._id!==(selfUserId)) && <button onClick={()=>UserFollow(userInfo._id)} className='bg-[#3B49DF] mr-3 px-4 py-2 rounded outline-none font-bold text-white'>Follow</button>))
                 }
                 <div className=' inline relative'>
-                    <BsThreeDots size={35} onClick={(e)=>{setReportBoxOpen(!reportBoxopen); }} className='inline hover:bg-gray-200 rounded py-2 px-2 cursor-pointer'/>
+                    <BsThreeDots size={35} onClick={(e)=>{setReportBoxOpen(!reportBoxopen); }} className={`inline  rounded py-2 px-2 cursor-pointer ${reportBoxopen?'bg-gray-200':""}`}/>
                   <div className={`absolute  text-left  top-[180%] right-[5%] h-20 md:w-[220px] w-[180px] border-2 z-30 text-black bg-white p-2 py-3 ${reportBoxopen?'block':'hidden'} custome-shadow rounded`}>
-                       <p className='cursor-pointer'>Report abuse</p>
-                       <p className='mt-1 cursor-pointer'>Blocked user</p>
+                       <p className='cursor-pointer hover:text-blue-500'>Report abuse</p>
+                       <p className='mt-1 cursor-pointer hover:text-blue-500'>Blocked user</p>
                   </div>
                 </div>
             </div>
@@ -146,8 +170,12 @@ const WriterProfilePage = () => {
             </div>
             
             </div>
-            <div className='absolute w-36 h-36 bg-black rounded-full top-[4%] lg:left-[44%] md:left-[35%] sm:left-[15%] left-[10%] overflow-hidden border-2'><img src={img3}   alt="" className='bg-black object-cover'  /> 
-            
+            <div className='absolute w-36 h-36 bg-black rounded-full top-[4%] lg:left-[44%] md:left-[35%] sm:left-[15%] left-[10%] overflow-hidden border-2 '>
+              {userInfo?.profileImg?
+               <img src={userInfo?.profileImg}   alt="" className='bg-black object-cover'  /> :
+                <div className='text-6xl h-full text-center flex justify-center items-center' style={{color:`${randomColor}`}}> {userInfo.fname?.charAt(0)}{""}{userInfo.lname?.charAt(0)}</div>
+             
+              }
          </div>
         </div>
         
@@ -155,6 +183,11 @@ const WriterProfilePage = () => {
         <div className='max-w-[1000px] w-full  min-h-[600px] m-auto flex flex-row justify-between gap-x-4 '>
         <div className='left hidden lg:block max-w-[320px] w-full h-48 mt-3 '>
           
+           <div className='custome-shadow mb-4 rounded bg-white '>
+            <h1 className='text-xl font-medium border-b-[1px] border-gray-200 py-3 px-5'>Toatal Publish Posts</h1>
+            <p className='text-gray-600 text-[xl] px-5 py-2'>{AllUserPost?.length}</p>
+           </div>
+
            <div className='custome-shadow mb-4 rounded bg-white '>
             <h1 className='text-xl font-medium border-b-[1px] border-gray-200 py-3 px-5'>Skill/Language</h1>
             <p className='text-gray-600 text-[xl] px-5 py-2'>{userInfo.skillLanguage ?userInfo?.skillLanguage:"Not given"}</p>
