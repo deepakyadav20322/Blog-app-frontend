@@ -10,6 +10,7 @@
   scroll-behavior: smooth;
 }
 
+
  /* this class set the content width of editor-----  */
 .jodit-wysiwyg {
   max-width: 700px; /* Set the maximum visible width of the editor */
@@ -100,11 +101,80 @@
   animation: bounce 1s infinite;
 }
 
+/* =================================== Css for circular Loader ============================== */
 
+.loading {
+  width: 100vw;
+  height: 70vh;
+  background-color: white;
+  display: grid;
+  place-items: center;
+  max-width: 100%;
+}
 
+.loading > div {
+  width: 7vmax;
+  height: 7vmax;
+  /* border-bottom: 5px solid rgba(0, 0, 0, 0.719); */
+  border-bottom: 5px solid rgba(3, 52, 244, 0.719);
 
+  border-radius: 50%;
 
-/* ================================= Admin Css  ==================================== */
+  animation: loadingRotate 800ms linear infinite;
+}
+
+@keyframes loadingRotate {
+  to {
+    transform: rotateZ(-360deg);
+  }
+}
+/* ====================================== css for search icon movement ================== */
+
+.circular-movement {
+  border-radius: 50%;
+  position: relative;
+  animation: moveCircle 1.5s infinite linear;
+}
+
+@keyframes moveCircle {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  25% {
+    transform: translateX(10px) translateY(0);
+  }
+  50% {
+    transform: translateX(10px) translateY(8px);
+  }
+  75% {
+    transform: translateX(0) translateY(8px);
+  }
+  100% {
+    transform: translateX(0) translateY(0);
+  }
+}
+
+/* ===================== Company page css ============================= */
+.main-div {
+   transition: background 2s ease;
+}
+
+.gradient-green {
+  background: linear-gradient(to right, #00ff00, #33cc33);
+  transition: background 2s ease;
+}
+
+.gradient-blue {
+  background: linear-gradient(135deg, rgb(253, 237, 243) 0%, rgb(239, 158, 189) 100%);
+ 
+}
+
+.gradient-yellow {
+  background: linear-gradient(to right, #ffff00, #ffcc00);
+ 
+}
+
+/* ================================= Admin page  Css  ==================================== */
 
 .login-height{
 height: calc(100vh - 50px) ;

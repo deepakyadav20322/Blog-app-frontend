@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect,useRef} from 'react'
 import {BiSolidEdit, BiUpload} from 'react-icons/bi'
 import {FiTrash2} from 'react-icons/fi'
 import { Link,useNavigate } from 'react-router-dom'
@@ -24,6 +24,8 @@ const UserProfileUpdate = () => {
     work:"",
     education:"",
     brandColor:"#000",
+    profileImg:null
+
   }
   const [formData, setFormData] = useState(initialValue);
 
@@ -31,11 +33,21 @@ const UserProfileUpdate = () => {
   const userId =  JSON.parse(localStorage.getItem('blogUser')).user._id ;
   const token = JSON.parse(localStorage.getItem('blogAuth')).token;
   const [deleteModalShow,setDeleteModalShow] = useState(false);
+  const [profileImgs,setprofileImgs] = useState(null);
+  const fileInputRef = useRef();
+
+
+  const handleClick = (e) => {
+    e.preventDefault()
+      fileInputRef.current.click();
+    }
+
 
 
   useEffect(()=>{
     const UpdateUserData = async () => {
-      console.log(userId)
+      console.log(userId);
+     
       try {
         const response = await axios.get(`${baseURL}/user/getSingleUser/${userId}`,
          {headers: {
@@ -59,6 +71,7 @@ const UserProfileUpdate = () => {
             work:userData.work,
             education:userData.education,
             brandColor:userData.brandColor,
+            profileImg:userData.profileImg,
           });
         
         }
@@ -74,12 +87,12 @@ const UserProfileUpdate = () => {
   const handleOnSubmit = async(e)=>{
 
     e.preventDefault();
-  console.log('changes data',formData)
+  console.log('changes data',formData.profileImg)
     try {
       
       const response = await axios.post(`${baseURL}/user/updateUser/${userId}`, formData,{
         headers:{
-          'ContentType':'application/json',
+          'Content-Type':'multipart/form-data',
           Authorization:`Bearer ${token}`
         }
       });
@@ -103,29 +116,30 @@ const UserProfileUpdate = () => {
     <div className='max-w-[1080px] m-auto'>
       <div className="mx-auto p-6 bg-white rounded-lg shadow-md w-full border-2">
   <h2 className="text-2xl font-semibold mb-4">Update Your Profile</h2>
+  <form onSubmit={handleOnSubmit}>
   <div className='Image-container'>
-   <form action="">
+  
     <div className='w-full bg-gray-200 rounded my-5  px-8 py-8 flex flex-row justify-between'>
       <div className='flex flex-col sm:flex-row  justify-start items-center gap-5'>
-        <img src="https://i.pinimg.com/736x/59/37/5f/59375f2046d3b594d59039e8ffbf485a.jpg" alt="" className='w-20 rounded-full object-cover' />
+        <img src={profileImgs  && typeof profileImgs === 'object'?URL.createObjectURL(profileImgs):`${baseURL}/UserImages/${formData.profileImg}`} alt="" className='w-20 rounded-full object-cover' />
         <div className='text-center sm:text-start'>
         <p  className='text-[17px] font-small mb-1'>Change Profile Picture</p>
-          <input type="file"  className='hidden' />
+          <input type="file" name='profileImg'  className='hidden' ref={fileInputRef} onChange={(e) =>{ setFormData({ ...formData, profileImg: e.target.files[0] });setprofileImgs(e.target.files[0]) }} />
           <div className='flex items-center gap-x-4'>
-            <button className='px-3 py-2 rounded bg-[#161D29] text-white font-medium'>Select</button>
-            <button className='px-3 py-2 rounded bg-primary text-white font-medium'>Upload<span><BiUpload className='inline'/></span></button>
+            <button onClick={handleClick} className='px-3 py-2 rounded bg-[#161D29] text-white font-medium'>Select</button>
+            {/* <button className='px-3 py-2 rounded bg-primary text-white font-medium'>Upload<span><BiUpload className='inline'/></span></button> */}
           </div>
         </div>
       </div>
       <div className='flex sm:justify-between items-end sm:items-start'>
-      <Link to={'/profile'} className="text-white h-10 flex justify-center items-center  rounded font-bold px-[12px] py-[8px] bg-[#000]">Cancle</Link>
+      <div  className="text-white h-10 flex justify-center items-center cursor-not-allowed  rounded font-bold px-[12px] py-[8px] bg-[#302e2e]">Cancle</div>
       </div>
     </div>
-   </form>
+  
    
    </div>
 {/* //-------------------------- personal information start  */}
-  <form onSubmit={handleOnSubmit}>
+  
      <div className='w-full m-auto border-2 rounded  bg-gray-200 p-4'>
       <div className='flex flex-row justify-between items-center '>
         <h2 className='font-medium text-xl mb-4'>Personal Information</h2>
@@ -143,7 +157,6 @@ const UserProfileUpdate = () => {
                             <input
                               required
                               type="text"
-                              
                               name="fname"
                               value={formData.fname}
                               onChange={(e) => setFormData({ ...formData, fname: e.target.value })}
@@ -223,8 +236,30 @@ const UserProfileUpdate = () => {
 {/* --------------------------------- Basic Information Box -------------------------- */}
 
           <div className='flex flex-col justify-center items-start'>
-          <div className='my-4 w-[90%]  sm:w-full border-2 px-4 pb-2 bg-gray-200 rounded'>
+          <div className='my-4 w-[90%]  sm:w-full border-2 px-4 pb-2 bg-gray-200 rounded relative'>
           <h1 className=' text-2xl font-bold flex my-2 '>Basic</h1>
+             
+          {/* <div className='h-28 w-28  border-2 border-black absolute top-4 right-20'>
+            <img src={profileImgFile?URL.createObjectURL(profileImgFile):`https://www.freecodecamp.org/news/content/images/size/w2000/2021/08/imgTag.png`} className='h-28 w-28 object-cover' alt="" />
+          </div>
+                  <div className='w-full md:w-[390px] lg:w-[480px] '>
+              <label className="py-5 ">
+                            <p className="mb-1 mt-3 text-[rgb(23,23,23)] font-medium">
+                            Profile Image
+                            </p>
+                            <div className='border-[1px] border-black rounded-md text-black outline-none  focus:border-[#59e372] '>
+                            <input
+                              type='file'
+                              name="profileImg"
+                              onChange={(e) =>handleFileChange(e)}
+                              autoComplete="off"
+                              className="w-full px-3 py-1"
+                            />
+                            </div>
+                          </label>
+                          </div> */}
+                        
+
               <label className="py-5">
                             <p className="mb-1 mt-3 text-[rgb(23,23,23)] font-medium">
                             Website URL

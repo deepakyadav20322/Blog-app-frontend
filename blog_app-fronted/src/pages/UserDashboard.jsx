@@ -12,6 +12,7 @@ import toast,{Toaster} from 'react-hot-toast'
 import CommentPopUp from '../components/FirstDoLoginPopUp'
 import ShowAllFollowers from '../components/ShowAllFollowers'
 import ShowAllFollowing from '../components/ShowAllFollowing'
+import { baseURL } from '../config'
 
 
 
@@ -28,28 +29,18 @@ const DashboardLinks =[
 
 const UserDashboard = () => {
 
+  const naviagte = useNavigate()
   const {postDeletedTrack} = useContext(Authcontext);
-
-  useEffect(() => {
-    const loginMessage = localStorage.getItem('loginMessage');
-    const updateMessage = localStorage.getItem('updateMessage');
-    
-    if (loginMessage !== null) {
-      toast.success(loginMessage,{duration:3000});
-      localStorage.removeItem('loginMessage');
-     
-    }
-    if (updateMessage !== null) {
-      toast.success(updateMessage,{duration:3000});
-      localStorage.removeItem('updateMessage');
-     
-    }
-  }, []);
    
   const [userSpecificPosts,setUserSpecificPosts] = useState([]);
-
-      const baseURL = 'http://localhost:3001'
+  const [followerFollowing,setFollowerFollowing] = useState("");
   const userId = JSON.parse(localStorage.getItem('blogUser')).user._id;
+  const token = JSON.parse(localStorage.getItem('blogAuth')).token;
+
+  const [dashSmallNavOpen,setDashSmallNavOpen] = useState(false);
+  const{loginUser}  = useContext(Authcontext);
+  console.log('loginUesr=>',loginUser);
+  const[renderValue,setRenderValue] = useState('Post');
 
   useEffect(()=>{
  
@@ -66,20 +57,48 @@ const UserDashboard = () => {
     } catch (error) {
       console.log(error);
       
-    }
-  }
-  getAllPostsUser()
-  
+    }}
 
+ const getFollowerFollowing = async()=>{
+  try {
+    
+     const res = await axios.get(`${baseURL}/user/getgetFollowerFollowing/${userId}`,{
+       headers:{
+        Authorization:`Bearer ${token}`,
+        "Content-Type":"application/json"
+       }
+     }); 
+     if(res.status===200){
+      console.log('getFollowerFollowing=>',res.data.data);
+      setFollowerFollowing(res.data.data);
+     }
+
+  } catch (error) {
+    console.log(error)
+  }
+ }
+
+ getFollowerFollowing();
+  getAllPostsUser();
 
   },[postDeletedTrack]);
  
 
-  const [dashSmallNavOpen,setDashSmallNavOpen] = useState(false);
-  const{loginUser,setLoginUser}  = useContext(Authcontext);
-  const naviagte = useNavigate()
-  console.log('loginUesr=>',loginUser);
-  const[renderValue,setRenderValue] = useState('Post');
+  useEffect(() => {
+    const loginMessage = localStorage.getItem('loginMessage');
+    const updateMessage = localStorage.getItem('updateMessage');
+    
+    if (loginMessage !== null) {
+      toast.success(loginMessage,{duration:3000});
+      localStorage.removeItem('loginMessage');
+     
+    }
+    if (updateMessage !== null) {
+      toast.success(updateMessage,{duration:3000});
+      localStorage.removeItem('updateMessage');
+     
+    }
+  }, []);
 
   const handleClickRender = (event, linkText) => {
     event.preventDefault();
@@ -134,9 +153,9 @@ const UserDashboard = () => {
               {/* <UserProfileUpdate/> */}
               {renderValue==='Post'?<UdashboardPostShow userSpecificPosts={userSpecificPosts} />:""}
               {renderValue==='Profile'?<UserProfile/>:""}
-              {renderValue==='Analytics'?<UdashboardPostStats/>:""}
-              {renderValue==='Followers'?<ShowAllFollowers/>:""}
-              {renderValue==='Following'?<ShowAllFollowing/>:""}
+              {renderValue==='Analytics'?<UdashboardPostStats userSpecificPosts={userSpecificPosts}/>:""}
+              {renderValue==='Followers'?<ShowAllFollowers followers={followerFollowing.followers} />:""}
+              {renderValue==='Following'?<ShowAllFollowing following={followerFollowing.following} />:""}
               {/* {renderValue==='Post'?<UdashboardPostShow/>:""} */}
             </div>
             </div>

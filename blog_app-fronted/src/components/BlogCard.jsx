@@ -28,18 +28,15 @@ const BlogCard = ({post}) => {
     }
   }
 
- useEffect(()=>{
-console.log('blogcard render')
-console.log(post)
- },[])
 
   return (
   
-      <article key={post._id} className="flex max-w-xl flex-col items-start justify-between p-3 rounded-[7px] shadow-sm border border-gray-300 active:border-blue-600 active:border-4 bg-white">
+      <article key={post._id} className="flex max-w-xl flex-col items-start justify-between p-3 rounded-[7px] shadow-lg border border-gray-300 active:border-blue-300 active:border-4 bg-white">
        
         
 
         <div className="relative mt-5 flex items-center gap-x-4">
+         
           <img src="" alt="" className="h-10 w-10 rounded-full bg-gray-50" />
           <div className="text-sm leading-6">
             <p className="font-semibold text-gray-900">
@@ -52,7 +49,8 @@ console.log(post)
             </p>
             {/* <p className="text-gray-600">{post.author.role}</p> */}
             <time dateTime={post.createdAt} className="text-gray-500">
-            {formattedDate}
+            {formattedDate}            
+            <span className='inline mr-2 font-medium text-sm sm:hidden ml-3 ' >, {post?.readTime} min </span>
           </time>
           </div>
         </div>
@@ -69,11 +67,11 @@ console.log(post)
         </div>
         
         <div className="flex items-center justify-between gap-x-4 w-full">
-          <div className='flex items-center gap-x-4 text-xs my-3'>
+          <div className='flex items-center gap-x-4 text-xs my-2 flex-wrap'>
         {(post.tags).map((tag,id)=>(
          <Link to={'#'} key={id} 
            href=""
-           className="relative inline-block z-10 rounded-full bg-gray-100 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-200"
+           className="relative inline-block z-10 rounded-full bg-gray-100 px-3 py-1.5 my-1 font-medium text-gray-600 hover:bg-gray-200"
          >
                {tag}
          
@@ -81,6 +79,7 @@ console.log(post)
       ))}
       </div>
       {/* <span>  <FiBookmark onClick={handleSavePostIcon} size={22} color= 'black' className='inline cursor-pointer'/></span> */}
+      <span className=' mr-2 font-medium text-sm hidden sm:inline ' >{post?.readTime} min </span>
        </div>
        {( postSavedAllowedPopUp) && <FirstDoLoginPopUp  setAllowedPopUp={setPostSavedAllowedPopUp} />}
       </article>

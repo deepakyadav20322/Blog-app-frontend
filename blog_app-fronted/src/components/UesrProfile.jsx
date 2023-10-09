@@ -3,6 +3,7 @@ import userLogo from '../assets/userLogo.jpg'
 import {BiSolidEdit} from 'react-icons/bi'
 import {FiTrash2} from 'react-icons/fi'
 import { Link } from 'react-router-dom'
+import { baseURL } from '../config'
 
 
 const UesrProfile = () => {
@@ -12,7 +13,7 @@ const UesrProfile = () => {
     <div>
 
        <div className='w-full bg-primary h-40 relative mb-7 flex items-end justify-center'>
-         <div className='absolute w-36 h-36 rounded-full bg-[#F5F5F5] top-[-30%] left-[30%] sm:left-[40%] overflow-hidden'><img src={userLogo} alt="" /> 
+         <div className='absolute w-36 h-36 rounded-full bg-[#F5F5F5] top-[-30%] left-[30%] sm:left-[40%] overflow-hidden'><img src={userInfo?.profileImg?`${baseURL}/UserImages/${userInfo?.profileImg}`:userLogo} alt="profileImg" /> 
          </div>
          <span className='mb-5 text-[18px] font-medium'>@{(userInfo.email)?.split('@')[0]}</span>
        </div>
@@ -36,13 +37,13 @@ const UesrProfile = () => {
             </div>
             <div className='flex  flex-col md:flex-row justify-start gap-x-20 lg:gap-x-40 my-4'>
            <div className='flex flex-col text-[14px]'>
-            <span className='text-[#8da08e]'>Full Name</span> 
-            <span className=''>Deepak yadav</span> 
+            <span className='text-[#8da08e]'>Mobile</span> 
+            <span className=''>{userInfo.mob}</span> 
             </div>
-           <div className='flex flex-col text-[14px]'>
+           {/* <div className='flex flex-col text-[14px]'>
             <span className='text-[#8da08e]'>Email</span> 
             <span className=''>Deepak01@gmail.com</span> 
-            </div>
+            </div> */}
             </div>
            </div>
           

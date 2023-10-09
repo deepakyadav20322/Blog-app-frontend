@@ -5,6 +5,9 @@ import axios from 'axios';
 
 const AdminUserTable = ({allUserData,loading,blocking,setBlocking}) => {
 
+
+  const adminToken = localStorage.getItem("adminBlogAuth");
+
   // --------------------------------- To block the user ---------------
 const handleBlockUser = async (e,userId,status) => {
 
@@ -20,7 +23,11 @@ const handleBlockUser = async (e,userId,status) => {
     try {
    
       // Make an API request to block the user by ID
-      const response = await axios.put(`${baseURL}/admin/userBlock/${userId}`);
+      const response = await axios.put(`${baseURL}/admin/userBlock/${userId}`,{},{
+        headers:{
+          Authorization:`Bearer ${adminToken}`,
+        }
+      });
       if (response.status === 200) {
         console.log('User blocked successfully');
         setBlocking(!blocking);

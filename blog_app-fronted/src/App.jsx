@@ -23,6 +23,9 @@ import AdminLoginPage from './pages/AdminLoginPage';
 import AdminLogout from './components/AdminLogout';
 import AdminPrivateRoute from './components/AdminPrivateRoute';
 import WriterProfilePage from './pages/WriterProfilePage';
+import CreateCategory from './components/CreateCategory';
+import CompanyPage from './pages/CompanyPage';
+
 
 
 
@@ -45,6 +48,8 @@ function App() {
         <Route path='/emailVerification/:id' element={<EmailVerifyShow/>}/>
         <Route path='/singleBlog/:blogId' element={<SingleBlog/>}/>
         <Route path='/writer/:userId' element={<WriterProfilePage/>}/>
+        <Route path='/company' element={<CompanyPage/>}/>
+
         <Route  element={<PrivateRoute/>}>
          <Route path='/dashboard' element={<UserDashboard/>}/>
          <Route path='/new' element={<CreatePost/>}/>
@@ -64,6 +69,7 @@ function App() {
           <Route path='/admin/login' element={<AdminLoginPage />} />
           <Route element={<AdminPrivateRoute/>}>
           <Route index element={<AdminDashboard />} /> 
+          <Route path='/admin/createCategory' element={ <CreateCategory/>}/>
           <Route path='/admin/logout' element={<AdminLogout />} />
           </Route> 
           </Route>

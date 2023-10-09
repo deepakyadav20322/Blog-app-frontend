@@ -172,7 +172,7 @@ const WriterProfilePage = () => {
             </div>
             <div className='absolute w-36 h-36 bg-black rounded-full top-[4%] lg:left-[44%] md:left-[35%] sm:left-[15%] left-[10%] overflow-hidden border-2 '>
               {userInfo?.profileImg?
-               <img src={userInfo?.profileImg}   alt="" className='bg-black object-cover'  /> :
+               <img  src={userInfo?.profileImg && `${baseURL}/UserImages/${userInfo?.profileImg}`}  alt="" className='bg-black object-cover'  /> :
                 <div className='text-6xl h-full text-center flex justify-center items-center' style={{color:`${randomColor}`}}> {userInfo.fname?.charAt(0)}{""}{userInfo.lname?.charAt(0)}</div>
              
               }
@@ -251,11 +251,11 @@ const WriterProfilePage = () => {
     
       </div>
       <div className='flex flex-row justify-between items-center w-full'>
-        <div className=''>
-            <span className='mx-3'>Like 15</span>
+        <div className='text-[13px] text-gray-600'>
+            <span className='mx-3'>Like {post?.likes.length}</span>
             <Link><span className=' cursor-pointer'>comments{" "}{post?.comments.length}</span></Link>
         </div>
-        <div className=''>3 min read</div>
+        <div className='text-[13px] text-gray-600'>{post?.readTime} min read</div>
      </div>
      </article>
      ))}

@@ -5,18 +5,19 @@ import axios from 'axios';
 import { baseURL } from '../config';
 import {Authcontext} from '../context/UserContext'
 import { useNavigate } from 'react-router-dom';
-import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { AiOutlineCloseSquare, AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { FaWindowClose } from 'react-icons/fa';
 
 
 
 const Login = () => {
 
-console.log("deep22222")
+
   const [isOpenForget, setIsOpenForget] = useState(false);
   const [isOpenVerify, setIsOpenVerify] = useState(false);
   const [passShow, setPassShow] = useState(false);
- const{setIsAuthenticated,setLoginUser} =  useContext(Authcontext);
-const navigate = useNavigate()
+  const{setIsAuthenticated,setLoginUser} =  useContext(Authcontext);
+  const navigate = useNavigate()
   const initialValue = {
     email:"",
     password:"",
@@ -67,8 +68,44 @@ const handleOnChange = (event) => {
     }
   }
 
+
+
+ useEffect(() => {
+  const emailVerifyMess = localStorage.getItem('emailVerifyMessage');
+  
+  if (emailVerifyMess !== null) {
+    // toast(emailVerifyMess,{ 
+    //   duration:7000,
+    //   style:{
+    //       backgroundColor:'black',
+    //       color:'white',
+    //       maxWidth:'500px',
+    //       width:'100%',
+    //       padding:'6px',
+    //       textAlign:'left'
+    //   }})
+    toast((t) => (
+      <span className='bg-black text-white flex flex-row w-full justify-between'>
+        {emailVerifyMess}
+        <FaWindowClose size={25} onClick={() => toast.dismiss(t.id)} className='bg-red-500 text-white cursor-pointer rounded-[50%]' />
+        
+      </span>
+    ),{duration:20000, style:{
+            backgroundColor:'black',
+            color:'white',
+            maxWidth:'500px',
+            width:'100%',
+            padding:'6px',
+            
+        }});
+   localStorage.removeItem('emailVerifyMessage');
+   
+  }
  
- 
+}, []);
+
+
+
 
 useEffect(()=>{
   const getToken = localStorage.getItem("blogAuth");

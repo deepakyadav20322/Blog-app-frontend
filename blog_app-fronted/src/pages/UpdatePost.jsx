@@ -3,12 +3,13 @@ import { Authcontext } from "../context/UserContext";
 import axios from "axios";
 import { useParams ,useNavigate} from "react-router-dom";
 import JoditEditor from 'jodit-react';
+import calculateReadingTime from "../helper/ReadTime";
 
 const UpdatePost = () => {
 
   const baseURL = 'http://localhost:3001'  
   const { setLoginUser } = useContext(Authcontext);
-  const initialValue = { title: "", content: "", description: "", tags:[],author:"" };
+  const initialValue = { title: "", content: "", description: "", tags:[],author:"",readTime:"" };
   const [formData, setFormData] = useState(initialValue);
   const [selectedTags, setSelectedTags] = useState([]);
   const  {postId} = useParams();
@@ -34,6 +35,7 @@ const UpdatePost = () => {
             description: postData.description,
             tags: postData.tags,
             author: postData.author,
+            readTime:postData.readTime
           });
           // Set selectedTags based on the tags from the response
           setSelectedTags(postData.tags);
@@ -59,6 +61,7 @@ const handleSubmit = async (e) => {
           alert("Must add four tags...");
           return;
          }
+         formData.readTime = calculateReadingTime(formData.content)
         formData.tags = selectedTags
         formData.author = JSON.parse(localStorage.getItem('blogUser')).user._id ;
     

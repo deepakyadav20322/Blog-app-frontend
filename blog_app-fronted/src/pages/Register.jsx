@@ -59,6 +59,7 @@ function Register() {
       if(res.status===200){
         console.log(res.data);
          setResisterData(initialValue);
+      localStorage.setItem('emailVerifyMessage',"Email verification link send on your email, Please verify first.");
          navigate('/login');
       }
       

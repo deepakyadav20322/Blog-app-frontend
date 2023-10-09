@@ -1,16 +1,24 @@
-import React, { useState, useRef,useContext, useMemo } from "react";
+import React, { useState, useRef,useContext, useMemo, useEffect } from "react";
 import { Authcontext } from "../context/UserContext";
 import axios from "axios";
 import JoditEditor from 'jodit-react';
+import calculateReadingTime from "../helper/ReadTime";
+import { baseURL } from "../config";
+
+const categories = ["Technology", "Travel", "Food", "Fashion", "Health", "Lifestyle"];
 
 
 const CreatePost = () => {
   const { setLoginUser } = useContext(Authcontext);
-  const initialValue = { title: "", content: "", description: "", tags:[],author:"",mainImage:null };
+  const initialValue = { title: "", content: "", description: "", tags:[],author:"",mainImage:null,readTime:"",category:"" };
   const [formData, setFormData] = useState(initialValue);
   const [selectedTags, setSelectedTags] = useState([]);
+  const [allCategory, setAllCategory] = useState([]);
+
+
   const token = JSON.parse(localStorage.getItem('blogAuth')).token
-  const baseURL = 'http://localhost:3001';
+  // const baseURL = 'http://localhost:3001';
+  
 
  
   const editor = useRef(null);
@@ -22,12 +30,19 @@ const CreatePost = () => {
          if(selectedTags.length!==4){
           alert("Must add four tags...");
           return;
+         }else if(formData.category==""){
+          alert("Please select one category");
+          return;
+         }else if(formData.mainImage==null){
+          alert("Please select front image");
+          return;
          }
+         formData.readTime= calculateReadingTime(formData?.content)
         formData.tags = selectedTags
         formData.author = JSON.parse(localStorage.getItem('blogUser')).user._id ;
     console.log(formData)
     console.log("write api call?")
-    
+   
     try {
 
       const response = await axios.post(`${baseURL}/post/createPost`, formData, {
@@ -85,6 +100,24 @@ const CreatePost = () => {
   
   };
 
+
+      useEffect(()=>{
+
+  const fetchCategory = async()=>{
+  try {
+    const res = await axios.get(`${baseURL}/admin/getCategories`);
+    if(res.status===200){
+      setAllCategory(res.data.data);
+    }
+    
+  } catch (error) {
+    console.log(error);
+  }
+}
+   fetchCategory()
+      },[]);
+
+
   return (
     <div className="max-w-5xl   px-2 m-auto py-10">
       <div className="text-center text-primary mb-2 ">
@@ -124,6 +157,26 @@ const CreatePost = () => {
               placeholder="Short range title"
             />
           </div>
+
+          <div className="select-category border-2 border-gray-300 py-1 px-2 mt-6 mb-1">
+            <div className="flex flex-row justify-between items-center">
+            <label htmlFor="category">Select Category</label>
+            <select id="category" value={formData.category} onChange={(e)=>setFormData({...formData,category:e.target.value})}>
+                <option value="">Select category</option>
+                {allCategory?.map(category => (
+                    <option key={category._id} value={category.categoryName}>{category.categoryName}</option>
+                ))}
+            </select>
+            </div>
+
+            {/* <h2>Selected Categories:</h2>
+            <ul>
+                {categories.map(category => (
+                    <li key={category}>{category}</li>
+                ))}
+            </ul> */}
+        </div>
+
 
           <div className="flex flex-col justify-cenetr items-start my-4">
             <label
@@ -212,7 +265,7 @@ const CreatePost = () => {
             <button type="submit" className="py-2 px-4 rounded mr-3 border-2 border-primary hover:bg-primary hover:text-white ">
               Save
             </button>
-            <button className="p-2 rounded border-2 border-primary  hover:bg-primary hover:text-white   ">
+            <button className="p-2 rounded border-2 border-red-400  hover:bg-red-400 hover:text-white">
               Cancel
             </button>
           </div>

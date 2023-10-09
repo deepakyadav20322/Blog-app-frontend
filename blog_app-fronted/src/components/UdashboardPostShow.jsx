@@ -47,7 +47,7 @@ const UdashboardPostShow = ({userSpecificPosts}) => {
                   <p className='text-[12px]'>Published: 19 sep</p>
                   </div>
                   <div className='flex flex-row justify-between sm:justify-center mt-2 sm:mt-1 md:mt-0'>
-                  <div className='flex flex-row justify-between items-center'> <PiHeart size={21} className='mx-[6px]' /><FaRegComment className='mx-[6px]' size={21}/> <div className='flex gap-[2px] mr-1'> <BsEye size={21} className='mx-[6px]' />{post.viewCount} </div>
+                  <div className='flex flex-row justify-between items-center'> <PiHeart size={21} className='mx-[6px]' /><FaRegComment className='mx-[6px]' size={21}/> <div className='flex gap-[2px] mr-1'> <BsEye size={21} className='mx-[6px]' />{post.viewCount/2} </div>
                   </div>
                   <div className='flex flex-row justify-between items-center'><Link  className='ml-2 text-red-600' onClick={()=> toggleDeletePopup(post._id)} >Delete</Link>
                   <Link to={`/updatePost/${post._id}`} className='mx-[0.8rem] text-green-600'>Edit</Link>

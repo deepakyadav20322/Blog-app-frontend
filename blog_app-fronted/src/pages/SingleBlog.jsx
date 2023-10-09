@@ -15,7 +15,9 @@ import ScrollUpDown from '../components/ScrollUpDown'
 import ShareIconDropDown from '../components/ShareIconDropDown'
 import { baseURL } from '../config'
 import socket from '../helper/SocketConfig'
-
+import userLogo from '../assets/userLogo.jpg'
+import moment from 'moment';
+import formatDate from '../components/DateFormate'
 const SingleBlog = () => {
 
 
@@ -42,6 +44,8 @@ const SingleBlog = () => {
     const[allowedPopUp,setAllowedPopUp] = useState(false);
     const[likeAllowedPopUp,setLikeAllowedPopUp] = useState(false);
     const navigate = useNavigate();  
+    const [userRecomenPosts,setUserRecomenPosts] = useState([]);
+
     const options = {
       timeZone: "Asia/Kolkata", // Indian Standard Time (IST)
       year: "numeric",
@@ -141,6 +145,24 @@ const UserUnFollow = async(id)=>{
    }
       setApiCalled(true);
     }
+
+              // <-----------------Get this user all post for recommendation ---------> 
+              const getAllPostsUserRecomendation = async()=>{
+                try {
+                  const res = await axios.get(`${baseURL}/post/getAllPostsOfUserRecomendation/${blogId}`)
+                  if(res.status===200){
+                    console.log('user spaecific data success')
+                    console.log('recomendation data=> ',res.data.data);
+                    setUserRecomenPosts(res.data.data);
+                  }
+                  
+                } catch (error) {
+                  console.log(error);
+                  setApiCalled(true);
+                }
+              }
+              getAllPostsUserRecomendation()
+
 fetchSingleBlogPost();
 console.log("status")
 }
@@ -254,7 +276,8 @@ const handleCommentOnSubmit = async(e)=>{
     console.log(res.data.data);
     const newComment = res.data.data;
     newComment.createdAt = new Date()
-    newComment.author = {fname:blogUser.fname , lname:blogUser.lname};
+    newComment.author = {fname:blogUser.fname , lname:blogUser.lname,profileImg:blogUser.profileImg};
+    
     setCommentData({commentText:""});
     console.log(newComment)
     setAllPostedComment((prevComments) => [...prevComments, newComment].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
@@ -399,11 +422,13 @@ useEffect(() => {
             <div className='block w-full'>
                 <div className='flex '>
                     <Link to={`/writer/${blog?.author._id}`} className=''>
-                        <img src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" className="h-10 w-12 border-2 mt-1 rounded-[50%] bg-gray-50" />
+                        <img className='h-10 w-12 object-cover rounded-[50%] mt-1' src={blog?.author?.profileImg ? `${baseURL}/UserImages/${blog?.author.profileImg}`:userLogo} />
                     </Link>
                     <div className='ml-3 w-full flex flex-col'>
-                        <Link className='hover:text-blue-500' to={`/writer/${blog?.author._id}`}>{(blog.author).fname} {" "}{(blog.author).lname}</Link>
-                        <div><span className='mx-1'>Follow</span><span>{new Date(blog.createdAt).toLocaleString("en-US", options)}</span></div>
+                     <span>  <Link className='hover:text-blue-500 inline' to={`/writer/${blog?.author._id}`}>{(blog.author).fname} {" "}{(blog.author).lname}</Link> </span> 
+                        <div>
+                          {/* <span className='mx-1'>Follow</span> */}
+                          <span>{new Date(blog.createdAt).toLocaleString("en-US", options)}</span></div>
 
                     </div>
               <div className={`${userId===blog.author._id?'flex':"hidden"} rounded  py-2 sm:py-0 sm:flex-row sm:justify-center flex-col items-center justify-center sm:items-center bg-[#FEF5E6] h-12 sm:h-9 text-sm mr-2`}><div className=''> 
@@ -414,12 +439,16 @@ useEffect(() => {
             </div>
             <div className='flex flex-row justify-between mt-7 border-t-[0.2px] border-b-[0.2px] border-gray-200 py-2'>
                <div className='flex flex-row gap-4'>
+ {/*------------- All logics for likes and unlikes----------- */}
                <span className='hover:text-black'>
                    {!token  && <AiOutlineHeart size={25}  onClick={()=>setLikeAllowedPopUp(true)} className='inline cursor-pointer text-green-500'/>}
+                   {token &&  (blog.author._id === userId) && <AiOutlineHeart  size={25} className='inline cursor-not-allowed text-gray-300'/>}
                    {likeAllowedPopUp?<FirstDoLoginPopUp setAllowedPopUp={setLikeAllowedPopUp} />:""}
-                 {token && likeStateToggle?.length>=0  && likeStateToggle?.includes(userId)?  <AiTwotoneHeart onClick={()=>handleUnlike(blog._id)} size={25} className='inline cursor-pointer text-red-500'/>:(token &&<AiOutlineHeart onClick={()=>handleLike(blog._id)} size= {25} className='inline cursor-pointer'/>)}
+                   {likeAllowedPopUp?<FirstDoLoginPopUp setAllowedPopUp={setLikeAllowedPopUp} />:""}
+                 {token && likeStateToggle?.length>=0  && likeStateToggle?.includes(userId) && (blog.author._id != userId)?  <AiTwotoneHeart onClick={()=>handleUnlike(blog._id)} size={25} className='inline cursor-pointer text-red-500'/>:(token && (blog.author._id != userId)  && <AiOutlineHeart onClick={()=>handleLike(blog._id)} size= {25} className='inline cursor-pointer'/>)}
                     {likeStateToggle?.length}
                     </span>
+  {/* -------------------------***************---------------------- */}
                     <span className='relative'>
                     <a href='#comment-section' className='hover:text-blue-500' onMouseEnter={toggleTooltip} onMouseLeave={toggleTooltip}>
                     <FaRegCommentDots size={22}  className='hover:text-blue-500 inline cursor-pointer mr-1'/>
@@ -456,7 +485,7 @@ useEffect(() => {
                    {/*----- convert html content to readable content-----------  */}
                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(blog.content) }} />
 
-                    <div className='flex justify-start items-center gap-x-4 gap-y-1 my-3 ml-4 flex-wrap'>
+                    <div className='flex justify-start items-center gap-x-4 gap-y-1 my-10 ml-4 flex-wrap '>
                     {(blog.tags).map((tag,id)=>(
                     <Link to={'#'} key={id} 
                     href=""
@@ -469,9 +498,9 @@ useEffect(() => {
                  </div>
 
     {/* ------------------------ Bottom profile and follow button show ----------------------------------- */}
-                    <div className='bg-[#F9F9F9] h-64 w-full px-8 py-10 border-b-2 border-gray-300 my-4 flex flex-col justify-start'>
+                    <div className='bg-[#F9F9F9]  w-full md:mt-16 px-8 py-10 border-b-2 border-gray-300 my-4 flex flex-col justify-start'>
                       <div className='flex flex-row justify-between items-center'>
-                        <img src="https://imgv3.fotor.com/images/gallery/Realistic-Male-Profile-Picture.jpg" alt="" className='h-[90px] w-[90px] rounded-full border-2 object-cover' />
+                        <img src={blog?.author?.profileImg ? `${baseURL}/UserImages/${blog?.author.profileImg}`:userLogo} alt="" className='h-[90px] w-[90px] rounded-full border-2 object-cover' />
                         <div className='flex flex-row justify-center items-center gap-x-3'>
                         {!token   && (<button onClick={()=>setAllowedPopUp(true)} className='bg-[#1A8917] text-white px-3 py-2 font-bold rounded-[20px]'>Follow</button>)}
                         {allowedPopUp?<FirstDoLoginPopUp setAllowedPopUp={setAllowedPopUp} />:""}
@@ -486,7 +515,34 @@ useEffect(() => {
                       </div>
                        <p className='text-2xl font-bold mt-2'>Written by {blog.author.fname}{blog.author.lname}</p>
                       <p>{blog.author?.followers.length} Followers</p>
-                      <p className=' text-sm mt-3 '>{blog.author?.bio}</p>
+                      <p className=' text-sm mt-3 pb-5 border-b-[1px] border-[rgb(229, 229, 229)] '>{blog.author?.bio}</p>
+                      
+                     <div className='py-8 mx-auto '>
+                        <h2 className='mt-4 mb-8 text-base font-medium'>More from {blog.author.fname}{" "} {blog.author.lname}</h2>
+                        <div className='grid md:grid-cols-2 grid-cols-1 gap-3 mx-auto w-full gap-y-6 border-b-2 border-gray-200'>
+                          {userRecomenPosts && userRecomenPosts.map((recom)=>(
+                          <div key={recom._id} className='flex flex-col'>
+                           <Link to={`/singleBlog/${recom._id}`}> <img className='w-[345px] h-[172px] object-cover  cursor-pointer  hover:scale-105 transition-all duration-200' src={`${baseURL}/BlogImages/${recom.mainImage}`} onClick={()=>setApiCalled(false)} alt="" /> </Link> 
+                            <div className='flex flex-row mt-3 mb-3 gap-x-3'>
+                              <img className='h-8 w-8 rounded-full ' src={blog?.author?.profileImg? blog.author?.profileImg:userLogo} alt="photos" />
+                              <p className='pt-2 text-sm text-[#242424]'>{blog.author.fname}{" "}{blog.author.lname}</p>
+                              
+                            </div>
+                          <Link  to={`/singleBlog/${recom._id}`} className='inline'><h2 onClick={()=>setApiCalled(false)} className='text-xl text-[#242424] font-bold hover:text-blue-500'>{recom.title}</h2></Link> 
+                            {/* <p>{blog.description}</p> */}
+                            <div className='flex flex-row justify-between text-[13px] mx-2 text-gray-600 my-2  pb-3'>
+                             <p> {formatDate(recom.createdAt)}</p> 
+                             <p>{recom.readTime}{" "}{'min read'}</p> 
+                            </div>
+                          </div>
+                          ))}
+                          </div>
+                
+                      
+                        </div>
+                        <span>
+                        <Link to={`/writer/${blog.author._id}`} className='mx-3 my-3 md:my-6 px-3 py-2 border-[1px] outline-none border-[rgb(36,36,36)] text-[#242424] text-sm rounded-[20px] inline hover:bg-gray-300'>See all from {blog.author.fname}{" "}{blog.author.lname}</Link></span>
+
                     </div>
 
         {/* --------------------------------------- Comment section start ------------------------------------ */}
@@ -507,15 +563,17 @@ useEffect(() => {
                     </form>
                 </div>
                 </div>
-          {/* --------------------------------------  coment output section---------------- */}
+          {/* --------------------------------------  comment output section---------------- */}
           {allPostedComment && allPostedComment.map((comment,idx)=>(
                           <div key={idx} className= ' flex flex-row justify-start items-start gap-x-1 my-4'>
-                          <div className=''><img src={imag4} alt="userImg" className=' object-cover  rounded-[50%] h-[48px] w-[45px] border-2' /></div>
+                          <div className=''><img src={comment?.author?.profileImg?`${baseURL}/UserImages/${comment?.author?.profileImg}`: imag4} alt="userImg" className=' object-cover  rounded-[50%] h-[48px] w-[45px] border-2' /></div>
                           <div className='w-full border-[1px] rounded border-gray-300'>
-                            <div className='text-sm flex flex-row justify-start items-center my-3 pl-2 border-b-[1px] border-gray-300'><span className='font-medium'>{comment.author?.fname}{" "}{comment.author?.lname}</span> <span><LuDot className="inline" size={20} /></span> <span>{new Date(comment.createdAt).toLocaleString("en-US", options)}</span> 
+                            <div className='text-sm flex flex-row justify-start items-center my-3 pl-2 border-b-[1px] border-gray-300'><span className='font-medium'>{comment.author?.fname}{" "}{comment.author?.lname}</span> <span><LuDot className="inline" size={20} /></span> 
+                            <span>{moment(comment.createdAt).fromNow()}</span> 
+                            {/* <span>{new Date(comment.createdAt).toLocaleString("en-US", options)}</span>  */}
                             {/* <span className='ml-2'>Edited on March 6 2023</span> */}
                             </div>
-                            <div className='mx-3 my-1'>
+                            <div className='mx-3 my-1 text-sm'>
                             <div>{comment.commentText}</div>
                             </div>
                           </div>
@@ -535,7 +593,7 @@ useEffect(() => {
 
     {/* This component is use to down the whole page  */}
     <div className='hidden md:block'>
-    <ScrollUpDown  />
+    <ScrollUpDown />
     </div>
     <Toaster/>
     </>
