@@ -130,7 +130,7 @@ const WriterProfilePage = () => {
   return (
     <div className='bg-[#F5F5F5]'>
          <div className='w-full  min-h-[475px] m-auto  bg-[#F5F5F5] relative'>
-          <div className={`relative h-40 w-full flex items-end justify-center `} style={{backgroundColor:`${userInfo.brandColor?userInfo.brandColor:"black"}`}}>
+          <div className={`relative h-36 w-full flex items-end justify-center `} style={{backgroundColor:`${userInfo.brandColor?userInfo.brandColor:"black"}`}}>
 
             <div className='absolute max-w-[1000px] w-full bg-white rounded-[6px] min-h-[22rem] top-[50%] custome-shadow p-2'>
            

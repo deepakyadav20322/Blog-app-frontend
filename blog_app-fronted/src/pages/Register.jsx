@@ -84,14 +84,13 @@ useEffect(()=>{
   if(getToken){
    navigate('/dashboard')
   }
-  console.log("deepak11111111")
 })
 
   return (
     <div className="isolate bg-white px-6 py-6 sm:py-8 lg:px-8">
      
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Signup</h2>
+        <h2 className="text-3xl font-bold tracking-tight  sm:text-4xl  text-indigo-600">Signup</h2>
        
       </div>
       <form onSubmit={onHandleSubmit}  className="mx-auto mt-6 max-w-xl sm:mt-8">

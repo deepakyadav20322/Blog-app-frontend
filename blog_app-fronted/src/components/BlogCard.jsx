@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { BsSave } from 'react-icons/bs';
 import { FiBookmark } from 'react-icons/fi';
 import FirstDoLoginPopUp from './FirstDoLoginPopUp';
+import { baseURL } from '../config';
 
 
 const BlogCard = ({post}) => {
@@ -37,7 +38,7 @@ const BlogCard = ({post}) => {
 
         <div className="relative mt-5 flex items-center gap-x-4">
          
-          <img src="" alt="" className="h-10 w-10 rounded-full bg-gray-50" />
+          <img src={`${baseURL}/UserImages/${post.author?.profileImg}`} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
           <div className="text-sm leading-6">
             <p className="font-semibold text-gray-900">
               <Link to={`/writer/${post.author._id}`} className=' hover:text-blue-500' >

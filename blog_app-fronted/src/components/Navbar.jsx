@@ -30,7 +30,7 @@ const Navbar = () => {
             <div className="flex items-center cursor-pointer">
                 <img src={logo} height={35} width={40} />
                 <span className="font-bold ml-2 text-primary">
-                    Generative Blog
+                     Blog@Write
                 </span>
             </div>
         </Link>
@@ -43,7 +43,7 @@ const Navbar = () => {
             </li>
             
             <li className="mr-6 font-medium text-gray-600 hover:text-primary transition-colors duration-200">
-                <a href="#">Company</a>
+                <Link to={`/company`}>Company</Link>    
             </li>
         </ul>
         <ul className="flex items-center">

@@ -36,6 +36,7 @@ const SingleBlog = () => {
     const [commentData, setCommentData] = useState({commentText:""});
     const [allPostedComment, setAllPostedComment] = useState([]);
     const [allLikes, setAllLikes] = useState([]);
+    const [likeColor, setLikeColor] = useState(false);
     const [realTimeallLikes, setrealTimeAllLikes] = useState([]);
     const userId = JSON.parse(localStorage.getItem('blogUser'))?.user?._id;
     const blogUser = JSON.parse(localStorage.getItem('blogUser'))?.user;
@@ -53,7 +54,7 @@ const SingleBlog = () => {
       day: "numeric",
     };
     const currentURL = window.location.href; // Get current URL and copy to clipboard
-    const likeStateToggle = realTimeallLikes.length>0 ?realTimeallLikes: allLikes;
+    let likeStateToggle = realTimeallLikes.length>0 ?realTimeallLikes: allLikes;
 
 // -------------------------- Follow nad unfollow logic ---------------------------
 
@@ -127,7 +128,10 @@ const UserUnFollow = async(id)=>{
             console.log("single blog post => ",res.data);
             setBlog(res.data);
             setAllPostedComment((res.data.comments).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
-            setAllLikes(res.data.likes);
+            // we make an array of id's of all user who likes
+            const userIds = res.data.likes.map(like => (like._id));
+            setAllLikes(userIds);
+
             setLoading(false)
         }
       } catch (error) {
@@ -174,12 +178,14 @@ useEffect(() => {
   // Listen for real-time postLiked events
   socket.on('postLiked', (likes) => {
     console.log('socket like run',likes)
+    setLikeColor(true);
     setrealTimeAllLikes(likes)
   });
 
   // Listen for real-time postDisliked events
   socket.on('postUnliked', (likes) => {
     console.log('socket unlike run',likes)
+    setLikeColor(false)
     setrealTimeAllLikes(likes)
   });
 
@@ -201,12 +207,12 @@ const handleLike = async(id) => {
         }
         });
      if(res.status==200){
-      console.log(res.data.data.likes);
-        setAllLikes(res.data.data.likes);
+      console.log(res.data.data);
+        setAllLikes(res.data.data);
     
      }
     // Emit a likePost event to the server
-    socket.emit('likePost',res.data.data.likes);
+    socket.emit('likePost',res.data.data);
     } catch (error) {
       console.log(error)
     }
@@ -224,13 +230,14 @@ const handleUnlike = async(id) => {
         }
         });
      if(res.status==200){
-      console.log('unlike post',res.data.data.likes);
+      console.log('unlike post',res.data.data);
      
 
-        setAllLikes(res.data.data.likes);
+        setAllLikes(res.data.data);
      }
     // Emit a likePost event to the server
-    socket.emit('UnlikePost',res.data.data.likes);
+    socket.emit('UnlikePost',res.data.data);
+    
     } catch (error) {
       console.log(error)
     }
@@ -445,7 +452,7 @@ useEffect(() => {
                    {token &&  (blog.author._id === userId) && <AiOutlineHeart  size={25} className='inline cursor-not-allowed text-gray-300'/>}
                    {likeAllowedPopUp?<FirstDoLoginPopUp setAllowedPopUp={setLikeAllowedPopUp} />:""}
                    {likeAllowedPopUp?<FirstDoLoginPopUp setAllowedPopUp={setLikeAllowedPopUp} />:""}
-                 {token && likeStateToggle?.length>=0  && likeStateToggle?.includes(userId) && (blog.author._id != userId)?  <AiTwotoneHeart onClick={()=>handleUnlike(blog._id)} size={25} className='inline cursor-pointer text-red-500'/>:(token && (blog.author._id != userId)  && <AiOutlineHeart onClick={()=>handleLike(blog._id)} size= {25} className='inline cursor-pointer'/>)}
+                 {token && likeStateToggle?.length>=0  && likeStateToggle?.includes(userId) && (blog.author._id != userId)?  <AiTwotoneHeart onClick={()=>handleUnlike(blog._id)} size={25} className='inline cursor-pointer text-red-500'/>:(token && (blog.author._id != userId)  && <AiOutlineHeart onClick={()=>handleLike(blog._id)} size= {25}  className={`inline cursor-pointer `}/>)}
                     {likeStateToggle?.length}
                     </span>
   {/* -------------------------***************---------------------- */}

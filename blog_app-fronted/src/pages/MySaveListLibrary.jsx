@@ -87,9 +87,9 @@ const handleUnSavePost = async(e, postId)=>{
         <div className='naviagtion-option'>
              <ul className='flex flex-row justify-start items-center gap-4  border-b-2 pb-2'>
                 <li>firstThings</li>
-                <li>firstThings</li>
-                <li>firstThings</li>
-                <li>firstThings</li>
+                <li>SecondThings</li>
+                <li>ThirdThings</li>
+                <li>FourthThings</li>
                 
              </ul>
         </div>
@@ -108,9 +108,9 @@ const handleUnSavePost = async(e, postId)=>{
                 <div className='list-box-top flex flex-row justify-between items-center gap-x-2'>
                 <div className=' flex flex-row justify-start items-center gap-x-4'>
                   <div className='userImage'>
-                    <img src={imag4} alt="userImg" className='rounded-[50%] border-2 h-[55px] w-[50px] object-cover' />
+                    <img src={`${baseURL}/UserImages/${data.post.author?.profileImg}`} alt="userImg" className='rounded-[50%] border-2 h-[55px] w-[50px] object-cover' />
                   </div>
-                  <p>{data.post?.author.fname}{" "}{data.post?.author.lname} .</p>
+                 <Link to={`/writer/${data.post.author._id}`}> <p>{data.post?.author.fname}{" "}{data.post?.author.lname} </p></Link>
                   <p>{DateFormate(data.post.createdAt)}</p>
                 </div>
                 <div onClick={(e)=>handleUnSavePost(e,data?.post._id)} className='py-1 px-3 rounded-[20px] bg-primary hover:bg-primary-dark text-white border-none active:scale-90 cursor-pointer transition-all duration-200 ease-linear'>Unsave</div>

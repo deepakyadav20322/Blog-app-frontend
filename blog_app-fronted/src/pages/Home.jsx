@@ -7,7 +7,6 @@ import axios from 'axios'
 import ScrollUpDown from '../components/ScrollUpDown'
 import { baseURL } from '../config'
 import { BsSearch } from 'react-icons/bs'
-import Notifications from './NotificationPage'
 
 
 const Home = () => {
@@ -67,7 +66,7 @@ useEffect(()=>{
             </div>
 
         :<BlogList/>)}
-    <Notifications/>
+   
     </div>
     <Toaster/>
     <ScrollUpDown/>

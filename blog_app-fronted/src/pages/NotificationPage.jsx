@@ -25,7 +25,7 @@ const Notifications = () => {
   }, [socket]); // Empty dependency array ensures that this effect runs once after the initial render
 
   return (
-    <div>
+    <div> 
       <h2>Notifications</h2>
       <ul>
         {notifications.map((notification, index) => (

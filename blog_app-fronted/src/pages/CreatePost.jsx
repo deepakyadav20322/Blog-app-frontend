@@ -4,25 +4,44 @@ import axios from "axios";
 import JoditEditor from 'jodit-react';
 import calculateReadingTime from "../helper/ReadTime";
 import { baseURL } from "../config";
+import {toast,Toaster} from 'react-hot-toast'
 
 const categories = ["Technology", "Travel", "Food", "Fashion", "Health", "Lifestyle"];
-
+import Confetti from 'react-dom-confetti';
 
 const CreatePost = () => {
+  const [showConfetti, setShowConfetti] = useState(false);
   const { setLoginUser } = useContext(Authcontext);
   const initialValue = { title: "", content: "", description: "", tags:[],author:"",mainImage:null,readTime:"",category:"" };
   const [formData, setFormData] = useState(initialValue);
   const [selectedTags, setSelectedTags] = useState([]);
   const [allCategory, setAllCategory] = useState([]);
-
+  
+  const confettiConfig = {
+    angle: 45,
+    spread: 230,
+    startVelocity: 40,
+    elementCount: 200,
+    dragFriction: 0.12,
+    duration: 4000,
+    stagger: 3,
+    width: '10px',
+    height: '10px',
+    colors: ['#a864fd', '#29cdff', '#78ff44', '#ff718d', '#fdff6a']
+  };
 
   const token = JSON.parse(localStorage.getItem('blogAuth')).token
   // const baseURL = 'http://localhost:3001';
   
-
- 
   const editor = useRef(null);
 
+  const handleConfettiShow = () => {
+    setShowConfetti(true); // Set showConfetti to true when you want to show confetti
+    setTimeout(()=>{
+      setShowConfetti(false)
+    },2000)
+  
+  };
 
 
   const handleSubmit = async (e) => {
@@ -54,10 +73,13 @@ const CreatePost = () => {
       if(response.status===200){
         const data = response.data;
         console.log('save posts=>',data);
+        handleConfettiShow()
+        toast.success("Post created successfully");
       }
       setFormData(initialValue);
       setSelectedTags([]);
     } catch (error) {
+      toast.error("Error to create the new posts");
       console.log("Error to create the new posts",error)
     }
 
@@ -118,12 +140,15 @@ const CreatePost = () => {
       },[]);
 
 
+
   return (
     <div className="max-w-5xl   px-2 m-auto py-10">
+       <Confetti active={showConfetti} config={confettiConfig}/>
       <div className="text-center text-primary mb-2 ">
         {" "}
         <span className="border-b-2 border-black px-4 pb-2">
           Create Your New Post{" "}
+       
           
         </span>
       </div>
@@ -271,6 +296,8 @@ const CreatePost = () => {
           </div>
         </form>
       </div>
+     
+      <Toaster/>
     </div>
   );
 };

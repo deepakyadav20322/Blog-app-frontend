@@ -5,20 +5,7 @@ import { Link } from 'react-router-dom';
 import userLogo from '../assets/userLogo.jpg';
 import { baseURL } from '../config';
 
-    const profileLinks = [
-        {
-          linkText: "Dashboard",
-          link: "/dashboard"
-        },
-        {
-          linkText: "Saved Posts",
-          link: "/MySaveList"
-        },
-        {
-          linkText: "Sign out",
-          link:'/logout'
-        }
-      ];
+  
       
 
 function classNames(...classes) {
@@ -27,6 +14,29 @@ function classNames(...classes) {
 
 
 export default function DropDownAllLinks() {
+  let userName = JSON.parse(localStorage.getItem('blogUser'))?.user?.fname;
+  let userId = JSON.parse(localStorage.getItem('blogUser'))?.user?._id;
+
+
+  const profileLinks = [
+    {
+      linkText: `@${userName}`,
+      link: `/writer/${userId}`
+    },
+    {
+      linkText: "Dashboard",
+      link: "/dashboard"
+    },
+    {
+      linkText: "Saved Posts",
+      link: "/MySaveList"
+    },
+    {
+      linkText: "Sign out",
+      link:'/logout'
+    }
+  ];
+
 
   return (
     <Menu as="div" className="relative inline-block text-left ">

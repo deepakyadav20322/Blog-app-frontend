@@ -38,13 +38,13 @@ const CategoryTabs = ({setActiveCategory,setSearchQuery, setSearchbtnClick,searc
             
             ))}
         </ul>
-        <div className="flex items-center w-[400px]  border-[1px]  border-[#c7c6c6e4] rounded-sm mb-1">
+        <div className="flex items-center w-[400px]  border-[1px]  border-[#4e92f8e4] rounded-sm mb-1 ">
                 <input
                     onChange={(e) => setSearchQuery(e.target.value)}
                     
                     type="text"
                     placeholder="Search"
-                    className="outline-none border-0 rounded-md py-2 px-4 w-[90%] focus:border-0 focus:ring-0"
+                    className="border-0 rounded-md py-2 px-4 w-[90%]  focus:ring-0"
                 />
                 <svg
                     className="h-10 fill-gray-500  hover:bg-[#3B49DF1A]  p-3 m-[2px] rounded cursor-pointer"

@@ -5,7 +5,7 @@ const FaqItem = ({ question, answer, isOpen, onToggle }) => {
   return (
     <div className="bg-white w-full md:w-[80%] p-3 m-auto  rounded-lg mb-4 transition duration-500 ease-in-out ">
       <div className="flex justify-between items-center cursor-pointer" onClick={onToggle}>
-        <h3 className="text-xl font-semibold text-[#824179]">{question}</h3>
+        <h3 className="text-base font-semibold text-[#824179]">{question}</h3>
         <svg
           className={`w-6 h-6 ${isOpen ? 'transform rotate-180' : ''}`}
           fill="none"
