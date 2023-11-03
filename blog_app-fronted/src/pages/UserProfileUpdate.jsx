@@ -4,6 +4,7 @@ import {FiTrash2} from 'react-icons/fi'
 import { Link,useNavigate } from 'react-router-dom'
 import DeleteModal from '../components/deleteModal'
 import axios from 'axios'
+import toast, { Toaster } from 'react-hot-toast'
 
 const UserProfileUpdate = () => {
   
@@ -77,6 +78,7 @@ const UserProfileUpdate = () => {
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
+
       }
     };
 
@@ -106,6 +108,9 @@ const UserProfileUpdate = () => {
         console.error('Failed to update user');
       }
     } catch (error) {
+      let errMes = error.response.data.message
+  
+     toast.error(`${errMes}`);
       console.error('Error updating user:', error);
     }
 
@@ -427,6 +432,7 @@ const UserProfileUpdate = () => {
     </div>
     
       {deleteModalShow?<DeleteModal setDeleteModalShow={setDeleteModalShow}/>:""}
+      <Toaster/>
     </div>
   )
 

@@ -53,7 +53,7 @@ const CompanyPage = () => {
            <Link className={`px-3 py-2 rounded-full bg-slate-700 text-white font-medium ${getGradientClass()}`}
            onMouseEnter={()=>setIsHovered('one')}
            onMouseLeave={()=>setIsHovered('')}
-           >deepak</Link>
+           >company</Link>
            </div>
            <div className=' flex-col gap-y-2 hidden md:flex'>
          <div className={`card-two w-36 h-36 border-2 border-gray-400 hover-div cursor-pointer transition-transform duration-200 ease-linear ${isHovered=='two' ? 'bg-blue-300  -translate-y-6' : ''} `} onMouseEnter={()=>setIsHovered('two')}
@@ -62,7 +62,7 @@ const CompanyPage = () => {
            <Link className={`px-3 py-2 rounded-full bg-slate-700 text-white font-medium ${getGradientClass()}`}
            onMouseEnter={()=>setIsHovered('two')}
            onMouseLeave={()=>setIsHovered('')}
-           >deepak</Link>
+           >company</Link>
            </div>
            <div className='flex flex-col gap-y-2'>
          <div className={`card-three w-36 h-36 border-2 border-gray-400 hover-div cursor-pointer transition-transform duration-200 ease-linear ${isHovered=='three' ? 'bg-blue-400  -translate-y-6' : ''} `} onMouseEnter={()=>setIsHovered('three')}
@@ -71,7 +71,7 @@ const CompanyPage = () => {
            <Link className={`px-3 py-2 rounded-full bg-slate-700 text-white font-medium ${getGradientClass()}`}
            onMouseEnter={()=>setIsHovered('three')}
            onMouseLeave={()=>setIsHovered('')}
-           >deepak</Link>
+           >company</Link>
            </div>
         
            </div>

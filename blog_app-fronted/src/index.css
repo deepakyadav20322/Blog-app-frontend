@@ -179,3 +179,11 @@
 .login-height{
 height: calc(100vh - 50px) ;
 }
+
+@media (max-width:420px) {
+.blog-main-content img{
+ width:350px;
+ object-fit: cover;
+ 
+}
+}

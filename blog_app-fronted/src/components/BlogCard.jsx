@@ -1,11 +1,8 @@
-import React, { useContext, useEffect,useState } from 'react'
-import { Authcontext } from '../context/UserContext';
-import axios from 'axios';
+import React, {useState } from 'react'
 import { Link } from 'react-router-dom';
-import { BsSave } from 'react-icons/bs';
-import { FiBookmark } from 'react-icons/fi';
 import FirstDoLoginPopUp from './FirstDoLoginPopUp';
 import { baseURL } from '../config';
+
 
 
 const BlogCard = ({post}) => {
@@ -32,9 +29,11 @@ const BlogCard = ({post}) => {
 
   return (
   
-      <article key={post._id} className="flex max-w-xl flex-col items-start justify-between p-3 rounded-[7px] shadow-lg border border-gray-300 active:border-blue-300 active:border-4 bg-white">
+      // <article key={post._id} className="flex max-w-3xl flex-col items-start justify-between p-3 rounded-[7px] shadow-lg border border-gray-300 active:border-blue-300 active:border-4 bg-white">
+      
+        <article key={post._id} className="flex max-w-3xl w-full flex-row items-center justify-between py-2 px-3 rounded-[7px] shadow-lg border border-gray-300 active:border-blue-300 active:border-4 bg-white">
        
-        
+        <div className='flex flex-col items-start justify-between'>
 
         <div className="relative mt-5 flex items-center gap-x-4">
          
@@ -51,7 +50,7 @@ const BlogCard = ({post}) => {
             {/* <p className="text-gray-600">{post.author.role}</p> */}
             <time dateTime={post.createdAt} className="text-gray-500">
             {formattedDate}            
-            <span className='inline mr-2 font-medium text-sm sm:hidden ml-3 ' >, {post?.readTime} min </span>
+            <span className='inline mr-2 font-medium text-sm sm:hidden ml-3 ' >, {post?.readTime} min read </span>
           </time>
           </div>
         </div>
@@ -80,9 +79,13 @@ const BlogCard = ({post}) => {
       ))}
       </div>
       {/* <span>  <FiBookmark onClick={handleSavePostIcon} size={22} color= 'black' className='inline cursor-pointer'/></span> */}
-      <span className=' mr-2 font-medium text-sm hidden sm:inline ' >{post?.readTime} min </span>
+      <span className=' mr-2 font-medium text-sm hidden sm:inline ' >{post?.readTime} min read </span>
        </div>
        {( postSavedAllowedPopUp) && <FirstDoLoginPopUp  setAllowedPopUp={setPostSavedAllowedPopUp} />}
+
+       </div>
+       
+       <img className='md:w-[140px] md:h-[140px] sm:h-[110px] sm:w-[110px] hidden sm:block  border-black object-cover text-center m-4' src={post?.mainImage? `${baseURL}/BlogImages/${post.mainImage}`:""} alt="" />
       </article>
   
   )

@@ -42,7 +42,7 @@ export default function DropDownAllLinks() {
     <Menu as="div" className="relative inline-block text-left ">
       <div>
         <Menu.Button className="inline-flex w-full justify-center  rounded-md bg-white hover:bg-gray-50">
-        <img src={userLogo} className='w-[50px] h-[50px] rounded-full border-2'/>
+        <img src={userLogo} className='w-[50px] h-[50px] rounded-full border-[1px] border-[#6695FF] '/>
          
         </Menu.Button>
       </div>
@@ -65,7 +65,7 @@ export default function DropDownAllLinks() {
                 <Link
                   to={data.link}
                   className={classNames(
-                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                    active ?`${data.linkText==="Sign out"?'bg-red-200 text-red-600':'bg-gray-100 text-gray-900'}`  : 'text-gray-700',
                     'block px-4 py-2 text-sm'
                   )}
                 >

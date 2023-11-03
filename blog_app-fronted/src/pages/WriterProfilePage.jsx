@@ -211,7 +211,7 @@ const WriterProfilePage = () => {
        
        <div className="group relative">
        <div className="relative mt-5 flex items-center gap-x-4">
-         <img src="" alt="" className="h-10 w-10 rounded-full bg-gray-50" />
+         <img src={`${baseURL}/UserImages/${post.author?.profileImg}`} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
          <div className="text-sm leading-6">
            <p className="font-semibold text-gray-900">
              <Link >

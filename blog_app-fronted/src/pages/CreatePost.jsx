@@ -144,18 +144,16 @@ const CreatePost = () => {
   return (
     <div className="max-w-5xl   px-2 m-auto py-10">
        <Confetti active={showConfetti} config={confettiConfig}/>
-      <div className="text-center text-primary mb-2 ">
+      <div className="text-center text-[#6695FF] mb-2 ">
         {" "}
-        <span className="border-b-2 border-black px-4 pb-2">
+        <span className="border-b-2 text-2xl font-semibold text-black border-black px-4 pb-2">
           Create Your New Post{" "}
-       
-          
         </span>
       </div>
       <div>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col justify-cenetr items-start">
-            <label htmlFor="title" className="text-2xl font-bold mt-2">
+            <label htmlFor="title" className="text-xl font-bold mt-2">
               Title
             </label>
             <input
@@ -165,7 +163,7 @@ const CreatePost = () => {
               name="title"
               id="title"
               className="outline-none border-2 border-gray-300 rounded w-full  "
-              placeholder="Short range title"
+              placeholder="Short range title..."
             />
           </div>
 
@@ -179,7 +177,6 @@ const CreatePost = () => {
               name="mainImage"
               id="mainImage"
               className="outline-none border-2 border-gray-300 rounded w-full p-3  "
-              placeholder="Short range title"
             />
           </div>
 
@@ -219,7 +216,7 @@ const CreatePost = () => {
               cols="10"
               rows="10"
               minLength={"100"}
-              maxLength={"250"}
+              maxLength={"120"}
               className="w-full h-[170px] sm:h-[100px] min-h-[100px] rounded p-2 resize-none"
               placeholder="Give short discription abour your post. Character limit gone from 100 to 250"
             ></textarea>

@@ -48,7 +48,7 @@ const Navbar = () => {
         </ul>
         <ul className="flex items-center">
             {
-               ( token && isAuthenticated) ?(<Link to={'/new'} className='border-2 mr-3 border-primary px-2 py-2 rounded'>Create Post</Link>): (<li className="mr-6 font-medium text-gray-600">
+               ( token && isAuthenticated) ?(<Link to={'/new'} className='border-2 mr-3 hover:bg-[#6695FF] border-[#6695FF] hover:text-white px-2 py-2 rounded'>Create Post</Link>): (<li className="mr-6 font-medium text-gray-600">
                 <Link to={'/login'} className="hover:text-gray-400 border-2 rounded border-primary px-3 py-2">
                     Login</Link></li>) }
             {

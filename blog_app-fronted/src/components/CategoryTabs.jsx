@@ -1,12 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
-import { Authcontext } from '../context/UserContext'
 import axios from 'axios'
 import { baseURL } from '../config'
 
 const CategoryTabs = ({setActiveCategory,setSearchQuery, setSearchbtnClick,searchbtnClick,activeCategory}) => {
 
-    const {pathname} =  useLocation()
     const [allAategory,setAllCategory]  = useState([]);
 
     useEffect(()=>{
@@ -32,7 +29,7 @@ const CategoryTabs = ({setActiveCategory,setSearchQuery, setSearchbtnClick,searc
     <div className=''>
     <div className='mx-6 m-auto mb-1 mt-4 flex items-center justify-between border-b-2 '>
         <ul className='flex items-center'>
-            <li className={`mr-6 pb-3 border-b-4 rounded-sm ${activeCategory==''?'border-primary text-primary': 'border-white text-gray-400'}`}><span onClick={()=>setActiveCategory("")} className='cursor-pointer'>All Posts</span></li>
+            <li className={`mr-6 pb-3 border-b-4 rounded-sm ${activeCategory==''?'border-primary text-primary': 'border-white text-gray-400'}`}><span onClick={()=>setActiveCategory("")} className='cursor-pointer' style={{ whiteSpace: 'nowrap' }}>All Posts</span></li>
            { allAategory.map((cat)=>(
             <li  className={`mr-6 pb-3 border-b-4 rounded-sm ${activeCategory==cat?.categoryName ?'border-primary text-primary': 'border-white text-gray-500  transition-all duration-150'} `}><span onClick={(e)=>cat && setActiveCategory(e.target.textContent)} className='cursor-pointer'>{cat?.categoryName}</span></li>
             

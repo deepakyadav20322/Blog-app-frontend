@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import BlogCard from './BlogCard'
 import { Authcontext } from '../context/UserContext'
-import FirstDoLoginPopUp from './FirstDoLoginPopUp';
-import { BsSearch } from 'react-icons/bs';
 
 
 const BlogList = () => {
@@ -99,7 +97,7 @@ useEffect(() => {
         <div className=" pb-2sm:py-2">
       <div className="mx-auto max-w-7xl w-full px-6 lg:px-8">
       
-        <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-12  pt-10 sm:mt-10 sm:pt-4 lg:mx-0 lg:max-w-none lg:grid-cols-2 ">
+        <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-12  pt-10 sm:mt-10 sm:pt-4 lg:mx-0 lg:max-w-none">
     {allPosts.map((post,id) => (
 
         <BlogCard key={id} post={post} />
