@@ -1,10 +1,11 @@
 import React from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { baseURL } from '../config'
 
 const DeleteModal = ({setDeleteModalShow}) => {
 
-const baseURL = 'http://localhost:3001'
+// const baseURL = 'http://localhost:3001'
 const authToken = JSON.parse(localStorage.getItem('blogAuth')).token ;
 const navigate = useNavigate();
 const handleOnDelete = async()=>{

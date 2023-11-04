@@ -5,6 +5,7 @@ import { Link,useNavigate } from 'react-router-dom'
 import DeleteModal from '../components/deleteModal'
 import axios from 'axios'
 import toast, { Toaster } from 'react-hot-toast'
+import { baseURL } from '../config'
 
 const UserProfileUpdate = () => {
   
@@ -30,7 +31,7 @@ const UserProfileUpdate = () => {
   }
   const [formData, setFormData] = useState(initialValue);
 
-  const baseURL = 'http://localhost:3001'
+  // const baseURL = 'http://localhost:3001'
   const userId =  JSON.parse(localStorage.getItem('blogUser')).user._id ;
   const token = JSON.parse(localStorage.getItem('blogAuth')).token;
   const [deleteModalShow,setDeleteModalShow] = useState(false);

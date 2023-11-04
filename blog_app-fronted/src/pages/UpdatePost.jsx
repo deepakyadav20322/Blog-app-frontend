@@ -4,10 +4,11 @@ import axios from "axios";
 import { useParams ,useNavigate} from "react-router-dom";
 import JoditEditor from 'jodit-react';
 import calculateReadingTime from "../helper/ReadTime";
+import { baseURL } from "../config";
 
 const UpdatePost = () => {
-
-  const baseURL = 'http://localhost:3001'  
+  
+  // const baseURL = 'http://localhost:3001'  
   const { setLoginUser } = useContext(Authcontext);
   const initialValue = { title: "", content: "", description: "", tags:[],author:"",readTime:"" };
   const [formData, setFormData] = useState(initialValue);
