@@ -12,7 +12,6 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-
 export default function DropDownAllLinks() {
   let userName = JSON.parse(localStorage.getItem('blogUser'))?.user?.fname;
   let userId = JSON.parse(localStorage.getItem('blogUser'))?.user?._id;
@@ -39,7 +38,7 @@ export default function DropDownAllLinks() {
 
 
   return (
-    <Menu as="div" className="relative inline-block text-left ">
+    <Menu as="div" className="relative inline-block text-left  ">
       <div>
         <Menu.Button className="inline-flex w-full justify-center  rounded-md bg-white hover:bg-gray-50">
         <img src={userLogo} className='w-[50px] h-[50px] rounded-full border-[1px] border-[#6695FF] '/>
@@ -57,7 +56,7 @@ export default function DropDownAllLinks() {
         leaveTo="transform opacity-0 scale-95"
       >
         
-        <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none userProf ">
+        <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none userProf border-[1px] border-gray-400 ">
           <div className="py-1">
           {profileLinks.map((data,idx)=>(
             <Menu.Item key={idx}>

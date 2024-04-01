@@ -155,38 +155,32 @@ const CompanyPage = () => {
 
     <div className='grid grid-cols-3 gap-16 pt-4 md:pt-0 md:mx-4'>
       <div>
-    <p className='mb-5'>Topics</p>
-       <p>fdkgjldk</p>
-      <p>kfjhlkfh</p>
-      <p>fdkgjldk</p>
-      <p>kfjhlkfh</p>
-      <p>fdkgjldk</p>
-      <p>kfjhlkfh</p>
-      <p>fdkgjldk</p>
-      <p>kfjhlkfh</p>
+    <p className='mb-5 text-blue-600'>Topics</p>
+       <p>creative Blogs</p>
+       <p>Frontend design</p>
+       <p>server creation</p>
+       <p>web Animation</p>
+       <p>Databases</p>
+       <p>Web server</p>
       </div>
 
     <div>
-      <p className='mb-5'>Documentation</p>
-      <p>fdkgjldk</p>
-      <p>kfjhlkfh</p>
-      <p>fdkgjldk</p>
-      <p>kfjhlkfh</p>
-      <p>fdkgjldk</p>
-      <p>kfjhlkfh</p>
-      <p>fdkgjldk</p>
-      <p>kfjhlkfh</p>
+      <p className='mb-5 text-blue-600'>Documentation</p>
+      <p>creative Blogs</p>
+       <p>Frontend design</p>
+       <p>server creation</p>
+       <p>web Animation</p>
+       <p>Databases</p>
+       <p>Web server</p>
     </div>
-    <div className=''>
-      <p className='mb-5'>Products</p>
-      <p>fdkgjldk</p>
-      <p>kfjhlkfh</p>
-      <p>fdkgjldk</p>
-      <p>kfjhlkfh</p>
-      <p>fdkgjldk</p>
-      <p>kfjhlkfh</p>
-      <p>fdkgjldk</p>
-      <p>kfjhlkfh</p>
+    <div className='hidden md:block'>
+      <p className='mb-5 text-blue-600'>Products</p>
+      <p>creative Blogs</p>
+       <p>Frontend design</p>
+       <p>server creation</p>
+       <p>web Animation</p>
+       <p>Databases</p>
+       <p>Web server</p>
     </div>
     </div>
   </div>

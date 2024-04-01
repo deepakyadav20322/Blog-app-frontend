@@ -10,7 +10,7 @@ const categories = ["Technology", "Travel", "Food", "Fashion", "Health", "Lifest
 import Confetti from 'react-dom-confetti';
 
 const CreatePost = () => {
-  const [showConfetti, setShowConfetti] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);config
   const { setLoginUser } = useContext(Authcontext);
   const initialValue = { title: "", content: "", description: "", tags:[],author:"",mainImage:null,readTime:"",category:"" };
   const [formData, setFormData] = useState(initialValue);
@@ -34,6 +34,7 @@ const CreatePost = () => {
   // const baseURL = 'http://localhost:3001';
   
   const editor = useRef(null);
+  
 
   const handleConfettiShow = () => {
     setShowConfetti(true); // Set showConfetti to true when you want to show confetti
@@ -61,6 +62,7 @@ const CreatePost = () => {
         formData.author = JSON.parse(localStorage.getItem('blogUser')).user._id ;
     console.log(formData)
     console.log("write api call?")
+    console.log('====================>',formData.content);
    
     try {
 

@@ -187,3 +187,12 @@ height: calc(100vh - 50px) ;
  
 }
 }
+
+
+/* --------- For logoname in navigation bar ---------  */
+@media (max-width:390px) {
+  .logoname{
+   display: none;
+   
+  }
+  }

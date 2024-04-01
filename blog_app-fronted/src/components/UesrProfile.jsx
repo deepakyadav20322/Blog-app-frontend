@@ -1,4 +1,4 @@
-import React from 'react'
+ import React from 'react'
 import userLogo from '../assets/userLogo.jpg'
 import {BiSolidEdit} from 'react-icons/bi'
 import {FiTrash2} from 'react-icons/fi'

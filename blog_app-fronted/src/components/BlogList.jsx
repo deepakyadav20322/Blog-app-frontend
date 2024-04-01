@@ -94,7 +94,7 @@ useEffect(() => {
         {/* <div className='rounded-[2px] border-black w-full h-12 bg-primary flex flex-row justify-center items-center text-2xl font-bold text-white'>
             This is very usefull blog application for students.
           </div> */}
-        <div className=" pb-2sm:py-2">
+        <div className=" pb-2 sm:py-2">
       <div className="mx-auto max-w-7xl w-full px-6 lg:px-8">
       
         <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-12  pt-10 sm:mt-10 sm:pt-4 lg:mx-0 lg:max-w-none">
