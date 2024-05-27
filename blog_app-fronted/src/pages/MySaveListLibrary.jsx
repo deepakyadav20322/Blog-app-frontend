@@ -16,7 +16,7 @@ const [isPostUnSaved, setIsPostUnSaved] = useState(false)
 const token = JSON.parse(localStorage.getItem('blogAuth'))?.token;
 
 function truncateText(text, maxLength) {
-    if (text.length > maxLength) {
+    if (text?.length > maxLength) {
       return text.substring(0, maxLength) + '......';
     }
     return text;
@@ -57,8 +57,8 @@ const handleUnSavePost = async(e, postId)=>{
               }
             });
             if(response.status===200){
-            console.log( response.data); 
-            console.log("post unSaved successfully"); 
+            // console.log( response.data); 
+            // console.log("post unSaved successfully"); 
              // Remove the post ID from savedPosts in localStorage
         const blogUser = JSON.parse(localStorage.getItem('blogUser'));
         const updatedSavedPosts = blogUser.user.savedPost.filter(savedPost => savedPost.post !== postId);
@@ -94,7 +94,7 @@ const handleUnSavePost = async(e, postId)=>{
              </ul>
         </div>
         
-       {savePost.length===0?(
+       {savePost?.length===0?(
        <div className=' w-full lg:w-[90%] my-2 border-2 p-3  border-gray-400 rounded bg-white'>
             <div className='flex flex-col justify-center items-center min-h-[250px]'>
                 <h1 className='text-2xl font-bold mb-1'>Your reading list is empty</h1>
@@ -103,25 +103,25 @@ const handleUnSavePost = async(e, postId)=>{
         </div> ):
 
         (<div className='save-list-content'>
-            {savePost.map((data)=>(
-           <div key={data.post._id} className='list-box w-full lg:w-[90%] my-4 border-2 border-black p-3 rounded bg-white'>
+            {savePost && savePost.map((data)=>(
+           <div key={data.post?._id} className='list-box w-full lg:w-[90%] my-4 border-2 border-black p-3 rounded bg-white'>
                 <div className='list-box-top flex flex-row justify-between items-center gap-x-2'>
                 <div className=' flex flex-row justify-start items-center gap-x-4'>
                   <div className='userImage'>
-                    <img src={`${baseURL}/UserImages/${data.post.author?.profileImg}`} alt="userImg" className='rounded-[50%] border-2 h-[55px] w-[50px] object-cover' />
+                    <img src={`${baseURL}/UserImages/${data.post?.author?.profileImg}`} alt="userImg" className='rounded-[50%] border-2 h-[55px] w-[50px] object-cover' />
                   </div>
-                 <Link to={`/writer/${data.post.author._id}`}> <p>{data.post?.author.fname}{" "}{data.post?.author.lname} </p></Link>
-                  <p>{DateFormate(data.post.createdAt)}</p>
+                 <Link to={`/writer/${data.post?.author._id}`}> <p>{data.post?.author.fname}{" "}{data.post?.author.lname} </p></Link>
+                  <p>{DateFormate(data.post?.createdAt)}</p>
                 </div>
                 <div onClick={(e)=>handleUnSavePost(e,data?.post._id)} className='py-1 px-3 rounded-[20px] bg-primary hover:bg-primary-dark text-white border-none active:scale-90 cursor-pointer transition-all duration-200 ease-linear'>Unsave</div>
                 </div>
                 <div className='list-box-bottom flex flex-col justify-center items-start gap-y-4 my-[2px]'>
                   <h1 className='text-2xl font-bold'>This is the topic of our post which is saved list </h1>
-                  <p className='hidden sm:block'>{truncateText(data.post.description,100)}</p>
+                  <p className='hidden sm:block'>{truncateText(data.post?.description,100)}</p>
                   
                     <div className="flex items-center justify-between gap-x-4 w-full">
                     <div className='flex items-center gap-x-4 text-xs my-1'>
-                    {(data.post.tags).map((tag,id)=>(
+                    {data && data.post && (data.post?.tags).map((tag,id)=>(
          <Link to={'#'} key={id} 
            href=""
            className="relative inline-block z-10 rounded-full bg-gray-100 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-200"
