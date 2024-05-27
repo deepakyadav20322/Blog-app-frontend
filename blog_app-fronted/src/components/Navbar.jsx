@@ -11,14 +11,12 @@ import {AiOutlineClose} from 'react-icons/ai'
 
 const navLinkArr = [
     {name:'Products',
-    linkName:"",
+    linkName:"/",
     },
     {name:'Company',
     linkName:"/company",
     },
-    {name:'pricing',
-    linkName:"",
-    },
+
 ];
 
 const Navbar = () => {
