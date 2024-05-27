@@ -290,9 +290,9 @@ const CreatePost = () => {
             <button type="submit" className="py-2 px-4 rounded mr-3 border-2 border-primary hover:bg-primary hover:text-white ">
               Save
             </button>
-            <button className="p-2 rounded border-2 border-red-400  hover:bg-red-400 hover:text-white">
+            {/* <button type="button" className="p-2 rounded border-2 border-red-400  hover:bg-red-400 hover:text-white">
               Cancel
-            </button>
+            </button> */}
           </div>
         </form>
       </div>
