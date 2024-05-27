@@ -4,13 +4,14 @@ import axios from "axios";
 import JoditEditor from 'jodit-react';
 import calculateReadingTime from "../helper/ReadTime";
 import { baseURL } from "../config";
+
 import {toast,Toaster} from 'react-hot-toast'
 
 const categories = ["Technology", "Travel", "Food", "Fashion", "Health", "Lifestyle"];
 import Confetti from 'react-dom-confetti';
 
 const CreatePost = () => {
-  const [showConfetti, setShowConfetti] = useState(false);config
+  const [showConfetti, setShowConfetti] = useState(false);
   const { setLoginUser } = useContext(Authcontext);
   const initialValue = { title: "", content: "", description: "", tags:[],author:"",mainImage:null,readTime:"",category:"" };
   const [formData, setFormData] = useState(initialValue);
