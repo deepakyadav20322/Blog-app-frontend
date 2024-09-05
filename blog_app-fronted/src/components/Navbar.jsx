@@ -13,7 +13,7 @@ const navLinkArr = [
     {name:'Products',
     linkName:"/",
     },
-    {name:'Company',
+    {name:'Home',
     linkName:"/company",
     },
 
