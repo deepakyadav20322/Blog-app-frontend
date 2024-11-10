@@ -90,7 +90,7 @@ useEffect(()=>{
     <div className="isolate bg-white px-6 py-6 sm:py-8 lg:px-8">
      
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-3xl font-bold tracking-tight  sm:text-4xl  text-indigo-600">Signup</h2>
+        <h2 className="text-3xl font-bold tracking-tight  sm:text-4xl  text-[#53bd95]">Signup</h2>
        
       </div>
       <form onSubmit={onHandleSubmit}  className="mx-auto mt-6 max-w-xl sm:mt-8">
@@ -254,7 +254,7 @@ useEffect(()=>{
         <div className="mt-10">
           <button
             type="submit"
-            className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="block w-full rounded-md bg-[#53bd95] px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-[#4ab18a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#53bd95]"
           >
             Signup
           </button>

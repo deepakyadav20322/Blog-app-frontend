@@ -72,7 +72,7 @@ const Home = () => {
           </div>
         ) : (
           <>
-          <div className="flex justify-centetr gap-x-6 mx-auto">
+          <div className="flex justify-centetr gap-x-6 mx-auto w-full max-w-7xl">
           <BlogList />
           <Advertisement/>
           </div>

@@ -122,12 +122,8 @@ useEffect(()=>{
     <div className='relative flex justify-center items-center'>
        <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 ">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
-            className="mx-auto h-10 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            alt="Your Company"
-          />
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+          
+          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-[#53bd95]">
             Sign in to your account
           </h2>
         </div>
@@ -158,7 +154,7 @@ useEffect(()=>{
                   Password
                 </label>
                 <div className="text-sm">
-                  <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500" onClick={()=>setIsOpenForget(true)}>
+                  <a href="#" className="font-semibold text-indigo-400 hover:text-indigo-500" onClick={()=>setIsOpenForget(true)}>
                     Forgot password?
                   </a>
                 </div>
@@ -186,7 +182,7 @@ useEffect(()=>{
             <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="flex w-full justify-center rounded-md bg-[#53bd95] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#47ab85] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#53bd95]"
               >
                 Sign in
               </button>
@@ -195,13 +191,13 @@ useEffect(()=>{
 
           <p className="mt-10 text-center text-sm text-gray-500">
           Don't have an account??{' '}
-            <a href="/register" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+            <a href="/register" className="font-semibold leading-6 text-[#53bd95] hover:text-[#53bd95]">
               Signup
             </a>
           </p>
           <p className="mt-2 text-center text-sm text-gray-500">
             Email Not verify?{' '}
-       <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500" onClick={()=>setIsOpenVerify(true)}>
+       <a href="#" className="font-semibold leading-6 text-[#53bd95] hover:text-[#49ac86]" onClick={()=>setIsOpenVerify(true)}>
               Verify
             </a>
           </p>

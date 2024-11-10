@@ -10,7 +10,7 @@ import {AiOutlineClose} from 'react-icons/ai'
 // naviagtion link array---- 
 
 const navLinkArr = [
-    {name:'Products',
+    {name:'Blogs',
     linkName:"/",
     },
     {name:'Home',
