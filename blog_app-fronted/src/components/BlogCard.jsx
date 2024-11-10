@@ -31,7 +31,7 @@ const BlogCard = ({post}) => {
   
       // <article key={post._id} className="flex max-w-3xl flex-col items-start justify-between p-3 rounded-[7px] shadow-lg border border-gray-300 active:border-blue-300 active:border-4 bg-white">
       
-        <article key={post._id} className="flex max-w-3xl w-full flex-row items-center justify-between py-2 px-3 rounded-[7px] shadow-lg border border-gray-300 active:border-blue-300 active:border-4 bg-white">
+        <article key={post._id} className="flex max-w-3xl w-full flex-row items-center justify-between py-2 px-3 rounded-[7px] shadow-lg border border-gray-300 active:border-blue-300 active:border-2 bg-white">
        
         <div className='flex flex-col items-start justify-between'>
 

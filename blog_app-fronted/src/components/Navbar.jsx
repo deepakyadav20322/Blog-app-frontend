@@ -22,7 +22,7 @@ const navLinkArr = [
 const Navbar = () => {
 const [navOpen,setNavOpen] = useState(false);
 
-    console.log('navbar')
+    // console.log('navbar')
     const  { isAuthenticated ,setIsAuthenticated,setLoginUser} = useContext(Authcontext);
     const token = localStorage.getItem('blogAuth');
     useEffect(()=>{

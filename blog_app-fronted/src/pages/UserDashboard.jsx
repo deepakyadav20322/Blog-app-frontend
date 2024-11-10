@@ -39,18 +39,18 @@ const UserDashboard = () => {
 
   const [dashSmallNavOpen,setDashSmallNavOpen] = useState(false);
   const{loginUser}  = useContext(Authcontext);
-  console.log('loginUesr=>',loginUser);
+  // console.log('loginUesr=>',loginUser);
   const[renderValue,setRenderValue] = useState('Post');
 
   useEffect(()=>{
  
-    console.log(userId)
+    // console.log(userId)
    const getAllPostsUser = async()=>{
     try {
       const res = await axios.get(`${baseURL}/post/getAllPostsOfUser/${userId}`)
       if(res.status===200){
-        console.log('user spaecific data success')
-        console.log(res.data.data);
+        // console.log('user spaecific data success')
+        // console.log(res.data.data);
         setUserSpecificPosts(res.data.data);
       }
       
@@ -69,7 +69,7 @@ const UserDashboard = () => {
        }
      }); 
      if(res.status===200){
-      console.log('getFollowerFollowing=>',res.data.data);
+      // console.log('getFollowerFollowing=>',res.data.data);
       setFollowerFollowing(res.data.data);
      }
 

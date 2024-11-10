@@ -5,7 +5,7 @@ import {BsEye} from 'react-icons/bs'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import DeletePostPopUp from './DeletePostPopUp'
-
+import formatDate from './DateFormate'
 
 const UdashboardPostShow = ({userSpecificPosts}) => {
   // const [deletePopShow,setDeletePopShow] = useState(false);
@@ -38,16 +38,19 @@ const UdashboardPostShow = ({userSpecificPosts}) => {
                     </select>
                   </div>
                 </div>
+                 
                  {userSpecificPosts.length == 0 && <div className='h-60 w-full mt-2 border-2 text-center flex flex-row justify-center items-center border-gray-400 rounded '>
                          No any post publish yet.
                  </div> }
                 { userSpecificPosts.map((post)=>(
                 <div key={post._id} className='posts-container flex-col md:flex-row flex justify-between items-start border-2 p-4 rounded bg-white m-2'>
                   <div><Link to={`/singleBlog/${post._id}`} className='text-[#3B49DF] font-bold'>{post.title}</Link>
-                  <p className='text-[12px]'>Published: 19 sep</p>
+                  <p className='text-[12px]'>Published: {formatDate(post?.createdAt)}</p>
                   </div>
                   <div className='flex flex-row justify-between sm:justify-center mt-2 sm:mt-1 md:mt-0'>
-                  <div className='flex flex-row justify-between items-center'> <PiHeart size={21} className='mx-[6px]' /><FaRegComment className='mx-[6px]' size={21}/> <div className='flex gap-[2px] mr-1'> <BsEye size={21} className='mx-[6px]' />{post.viewCount/2} </div>
+                  <div className='flex flex-row justify-between items-center'> 
+                    {/* <PiHeart size={21} className='mx-[6px]' /> */}
+                    <FaRegComment className='mx-[6px]' size={21}/> <div className='flex gap-[2px] mr-1'> <BsEye size={21} className='mx-[6px]' />{post.viewCount/2} </div>
                   </div>
                   <div className='flex flex-row justify-between items-center'><Link  className='ml-2 text-red-600' onClick={()=> toggleDeletePopup(post._id)} >Delete</Link>
                   <Link to={`/updatePost/${post._id}`} className='mx-[0.8rem] text-green-600'>Edit</Link>

@@ -48,7 +48,7 @@ const UserProfileUpdate = () => {
 
   useEffect(()=>{
     const UpdateUserData = async () => {
-      console.log(userId);
+      // console.log(userId);
      
       try {
         const response = await axios.get(`${baseURL}/user/getSingleUser/${userId}`,
@@ -57,7 +57,7 @@ const UserProfileUpdate = () => {
          },});
 
         if (response.status===200) {
-           console.log("before updating user data=> ",response.data);
+          //  console.log("before updating user data=> ",response.data);
            let userData = response.data.data;
            setFormData({
             fname: userData.fname,
@@ -90,7 +90,7 @@ const UserProfileUpdate = () => {
   const handleOnSubmit = async(e)=>{
 
     e.preventDefault();
-  console.log('changes data',formData.profileImg)
+  // console.log('changes data',formData.profileImg)
     try {
       
       const response = await axios.post(`${baseURL}/user/updateUser/${userId}`, formData,{

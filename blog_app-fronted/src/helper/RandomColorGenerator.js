@@ -9,5 +9,5 @@ export default function getRandomColor() {
   
   // Example usage
   const randomColor = getRandomColor();
-  console.log(randomColor); // Output: "#3A7BCD" 
+  // console.log(randomColor); // Output: "#3A7BCD" 
   
