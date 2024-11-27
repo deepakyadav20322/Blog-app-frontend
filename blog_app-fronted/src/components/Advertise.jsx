@@ -19,7 +19,7 @@ const Advertisement = () => {
   ];
 
   return (
-    <div className="flex flex-col items-start">
+    <div className="hidden lg:flex flex-col items-start">
       {/* Discussion Section */}
       <div className="hidden lg:block w-80 mt-16 sticky top-10">
         <div className="flex flex-col p-4 bg-gray-50 border border-gray-200 rounded-lg shadow-sm max-h-[25rem]">
