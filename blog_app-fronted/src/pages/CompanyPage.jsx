@@ -202,6 +202,7 @@
 import React from 'react'
 import { FaCode, FaPenNib, FaChartLine, FaMobileAlt } from "react-icons/fa";
 import {baseURL} from '../config'
+import BenefitsSection from '../components/benefits';
 
 const CompanyPage = () => {
   return (
@@ -241,6 +242,8 @@ const CompanyPage = () => {
       </div>
     </section>
 
+    <BenefitsSection/>
+    
     {/* About section--- */}
 
     <section id="about" className="py-16 bg-gray-100">
@@ -286,6 +289,8 @@ const CompanyPage = () => {
         </div>
       </div>
     </section>
+
+    
 
     {/* Footer Section */}
     <footer className="bg-gray-900 text-white py-8">
