@@ -216,7 +216,7 @@ const CompanyPage = () => {
             </p>
             <div className="flex space-x-4">
               <a
-                href="/start-reading"
+                href="/"
                 className="bg-[#53bd95] text-white text-sm md:text-base font-semibold py-2 md:py-3 px-3 md:px-6 rounded-lg flex items-center space-x-2 hover:bg-green-600 transition duration-300"
               >
                 <span>Start Reading</span>
@@ -224,7 +224,7 @@ const CompanyPage = () => {
               </a>
 
               <a
-                href="/subscribe"
+                href="#subscribe"
                 className="border border-black text-black font-semibold py-3 px-6 rounded-lg hover:bg-gray-100 transition duration-300"
               >
                 Subscribe Now
