@@ -100,8 +100,8 @@ const [navOpen,setNavOpen] = useState(false);
   
   
    </ul>
-   <Link to={'/login'}  onClick={()=>setNavOpen(false)} className='bg-[#007BFF] text-white py-[6px] text-center w-full mt-4'>Login</Link>
-   <Link to={'/register'}  onClick={()=>setNavOpen(false)}className='bg-[#007BFF] text-white py-[6px] text-center w-full mt-4'>Sign up </Link>
+   <Link to={'/login'}  onClick={()=>setNavOpen(false)} className='bg-[#53bd95] text-white py-[6px] text-center w-full mt-4'>Login</Link>
+   <Link to={'/register'}  onClick={()=>setNavOpen(false)}className='bg-[#53bd95] text-white py-[6px] text-center w-full mt-4'>Sign up </Link>
    
          </div>
     </div>
