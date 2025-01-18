@@ -412,21 +412,47 @@ const CompanyPage = () => {
 
       {/* Footer Section */}
       <footer className="bg-gray-900 text-white py-8">
-        <div className="container mx-auto text-center">
-          <p>&copy; 2024 My Blog. All rights reserved.</p>
-          <div className="flex justify-center space-x-4 mt-4">
-            <a href="#" className="hover:text-gray-400">
-              Facebook
-            </a>
-            <a href="#" className="hover:text-gray-400">
-              Twitter
-            </a>
-            <a href="#" className="hover:text-gray-400">
-              LinkedIn
-            </a>
-          </div>
-        </div>
-      </footer>
+  <div className="container mx-auto px-4">
+    <div className="flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+      <p className="text-sm md:text-base">&copy; 2024 My Blog. All rights reserved.</p>
+      <div className="flex space-x-4 mt-4 md:mt-0">
+        <a
+          href="#"
+          className="hover:text-gray-400 transition-colors duration-300"
+          aria-label="Facebook"
+        >
+          Facebook
+        </a>
+        <a
+          href="#"
+          className="hover:text-gray-400 transition-colors duration-300"
+          aria-label="Twitter"
+        >
+          Twitter
+        </a>
+        <a
+          href="#"
+          className="hover:text-gray-400 transition-colors duration-300"
+          aria-label="LinkedIn"
+        >
+          LinkedIn
+        </a>
+      </div>
+    </div>
+    <div className="flex flex-col md:flex-row justify-center md:justify-between mt-6 text-xs md:text-sm text-gray-400">
+      <a href="#" className="hover:text-white transition-colors duration-300">
+        Privacy Policy
+      </a>
+      <a href="#" className="hover:text-white transition-colors duration-300">
+        Terms of Service
+      </a>
+      <a href="#" className="hover:text-white transition-colors duration-300">
+        Contact Us
+      </a>
+    </div>
+  </div>
+</footer>
+
     </div>
   );
 };
