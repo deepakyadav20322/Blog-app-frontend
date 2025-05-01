@@ -62,11 +62,11 @@ const Home = () => {
             </div>
           </div>
         ) : !loading && allPosts && allPosts.length == 0 ? (
-          <div className="mx-auto max-w-7xl w-full px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl w-full px-6 lg:px-8 mt-6 h-full">
             <div className="mx-auto max-w-7xl lg:mx-0 border-2 min-h-[18rem] flex flx-row justify-center items-center mt-6 bg-[#3B49DF1A] ">
               <h2 className="text-xl">
                 <BsSearch size={30} className="inline mr-3 circular-movement" />
-                No <span className="pt-4">results match that query</span>
+                🥺 No <span className="pt-4">results match that query</span>
               </h2>
             </div>
           </div>
