@@ -131,7 +131,7 @@ const UserDashboard = () => {
             </div>
         {/* ======================= (END)   Dashboard navigation bar for small screes========================= */}
 
-        <div className=' max-w-[1280px] m-auto border-2'>
+        <div className=' max-w-[1280px] m-auto'>
             <h1 className='my-2 text-2xl md:text-3xl font-bold md:ml-6 block'> <span onClick={()=>setDashSmallNavOpen(true)}><VscThreeBars className="inline ml-2 mr-5 cursor-pointer md:hidden" /></span>User Dashboard</h1>
             <div className='flex flex-row justify-start items-start w-full mt-10'>
             <div className='left-side hidden md:block '>

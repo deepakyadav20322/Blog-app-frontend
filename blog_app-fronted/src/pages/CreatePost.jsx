@@ -61,9 +61,9 @@ const CreatePost = () => {
          formData.readTime= calculateReadingTime(formData?.content)
         formData.tags = selectedTags
         formData.author = JSON.parse(localStorage.getItem('blogUser')).user._id ;
-    console.log(formData)
-    console.log("write api call?")
-    console.log('====================>',formData.content);
+    // console.log(formData)
+    // console.log("write api call?")
+    // console.log('====================>',formData.content);
    
     try {
 
@@ -75,7 +75,7 @@ const CreatePost = () => {
       });
       if(response.status===200){
         const data = response.data;
-        console.log('save posts=>',data);
+        // console.log('save posts=>',data);
         handleConfettiShow()
         toast.success("Post created successfully");
       }
@@ -145,7 +145,7 @@ const CreatePost = () => {
 
 
   return (
-    <div className="max-w-5xl   px-2 m-auto py-10">
+    <div className="max-w-5xl shadow-md rounded-lg px-2 sm:px-6 my-2  mx-auto py-10">
        <Confetti active={showConfetti} config={confettiConfig}/>
       <div className="text-center text-[#6695FF] mb-2 ">
         {" "}
@@ -230,17 +230,7 @@ const CreatePost = () => {
               Main content
             </label>
 
-            {/* <textarea
-             value={formData.content}
-             onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-              name="content"
-              id="content"
-              cols="50"
-              rows="10"
-              minLength={"300"}
-              maxLength={"10000"}
-              className="w-full min-h-[100px]"
-            ></textarea> */}
+            
           <JoditEditor
             ref={editor}
             value={formData.content} // Set the initial content value
@@ -257,7 +247,7 @@ const CreatePost = () => {
             <h2 className="text-xl font-semibold mb-2">
               Select up to four tags:
             </h2>
-            <div className="space-x-6 flex flex-row flex-wrap justify-start items-center">
+            <div className=" gap-3  flex flex-row flex-wrap justify-start items-center">
               {availableTags.map((tag) => (
                 <div key={tag} className="flex items-center my-2">
                   <input
@@ -287,12 +277,10 @@ const CreatePost = () => {
           {/* ---------------------------------------------------------------------------------- */}
 
           <div className="flex flex-row justify-end items-center">
-            <button type="submit" className="py-2 px-4 rounded mr-3 border-2 border-primary hover:bg-primary hover:text-white ">
+            <button type="submit" className="py-2 px-4 rounded mr-3 border-2 border-primary hover:bg-primary hover:text-white " >
               Save
             </button>
-            {/* <button type="button" className="p-2 rounded border-2 border-red-400  hover:bg-red-400 hover:text-white">
-              Cancel
-            </button> */}
+           
           </div>
         </form>
       </div>
