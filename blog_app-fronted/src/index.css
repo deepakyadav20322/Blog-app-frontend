@@ -196,3 +196,32 @@ height: calc(100vh - 50px) ;
    
   }
   }
+
+
+ .animate-gradient-border {
+  background: linear-gradient(white, white) padding-box,
+              linear-gradient(to right, #3b82f6, #10b981, #3b82f6) border-box;
+  background-size: 200% 100%;
+  animation: gradient-border-animation 3s linear infinite;
+}
+
+@keyframes gradient-border-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@keyframes color-pulse {
+  0% { background-color: #3b82f6; }  /* blue-500 */
+  25% { background-color: #10b981; } /* emerald-500 */
+  50% { background-color: #f59e0b; } /* amber-500 */
+  75% { background-color: #ef4444; } /* red-500 */
+  100% { background-color: #3b82f6; }
+}
+
+.animate-color-pulse {
+  animation: color-pulse 2s infinite;
+}

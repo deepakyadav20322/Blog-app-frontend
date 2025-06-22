@@ -132,8 +132,8 @@ const UserDashboard = () => {
         {/* ======================= (END)   Dashboard navigation bar for small screes========================= */}
 
         <div className=' max-w-[1280px] m-auto'>
-            <h1 className='my-2 text-2xl md:text-3xl font-bold md:ml-6 block'> <span onClick={()=>setDashSmallNavOpen(true)}><VscThreeBars className="inline ml-2 mr-5 cursor-pointer md:hidden" /></span>User Dashboard</h1>
-            <div className='flex flex-row justify-start items-start w-full mt-10'>
+            <h1 className='my-2 text-2xl md:text-3xl font-bold md:ml-6 block pt-2'> <span onClick={()=>setDashSmallNavOpen(true)}><VscThreeBars className="inline ml-2 mr-5 cursor-pointer md:hidden " /></span>User Dashboard<span className='text-yellow-600 pl-3 text-base font-normal'>{"("}You are using testing account.{")"}</span> </h1>
+            <div className='flex flex-row justify-start items-start w-full mt-4'>
             <div className='left-side hidden md:block '>
               <div className='left-navigation min-h-[90vh] rounded bg-white border-2 border-gray-400 w-[300px] mt-2'>
                 <ul className=' mb-2 h-full text-base'>

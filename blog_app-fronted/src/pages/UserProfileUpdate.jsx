@@ -33,6 +33,7 @@ const UserProfileUpdate = () => {
 
   // const baseURL = 'http://localhost:3001'
   const userId =  JSON.parse(localStorage.getItem('blogUser')).user._id ;
+  const user =  JSON.parse(localStorage.getItem('blogUser')) ;
   const token = JSON.parse(localStorage.getItem('blogAuth')).token;
   const [deleteModalShow,setDeleteModalShow] = useState(false);
   const [profileImgs,setprofileImgs] = useState(null);
@@ -421,9 +422,15 @@ const UserProfileUpdate = () => {
   <div className="ps-5">
     <p className="text-pink-300">Would you like to delete your account?</p>
     <p className="text-pink-300">If you delete your account, it cannot be recovered.</p>
+    {(user?.user?.email==='testuserblogwrite@gmail.com')?<>
+     <button disabled className="bg-red-600 hover:bg-red-700 text-white font-bold mt-4 py-2 px-4 rounded disabled:cursor-not-allowed">
+     Not have access to delete test user
+    </button>
+    </>
+:
     <button onClick={()=>setDeleteModalShow(true)} className="bg-red-600 hover:bg-red-700 text-white font-bold mt-4 py-2 px-4 rounded">
       Delete
-    </button>
+    </button>}
   </div>
 </div>
 </div>
